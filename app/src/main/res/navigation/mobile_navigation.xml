@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/booksFragment">
+    <fragment
+        android:id="@+id/booksFragment"
+        android:name="com.example.shiftr.view.BooksFragment"
+        android:label="@string/books"
+        tools:layout="@layout/books_fragment" />
+    <fragment
+        android:id="@+id/groceryListFragment"
+        android:name="com.example.shiftr.view.GroceryListFragment"
+        android:label="@string/grocery_list"
+        tools:layout="@layout/grocery_list_fragment" />
+    <fragment
+        android:id="@+id/imageUploadsFragment"
+        android:name="com.example.shiftr.view.ImageUploadsFragment"
+        android:label="@string/image_uploads"
+        tools:layout="@layout/image_uploads_fragment" />
+    <fragment
+        android:id="@+id/toDoListFragment"
+        android:name="com.example.shiftr.view.ToDoListFragment"
+        android:label="@string/to_do_list"
+        tools:layout="@layout/to_do_list_fragment" />
+    <fragment
+        android:id="@+id/medicalReportsFragment"
+        android:name="com.example.shiftr.view.MedicalReportsFragment"
+        android:label="@string/medical_reports"
+        tools:layout="@layout/medical_reports_fragment" />
+</navigation>

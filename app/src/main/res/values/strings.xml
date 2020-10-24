@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">shiftr</string>
+    <string name="to_do_list">To Do List</string>
+    <string name="grocery_list">Grocery List</string>
+    <string name="books">Books</string>
+    <string name="image_uploads">Image uploads</string>
+    <string name="medical_reports">Medical reports</string>
 </resources>
