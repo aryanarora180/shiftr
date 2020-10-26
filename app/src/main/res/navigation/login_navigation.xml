@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_navigation"
+    app:startDestination="@id/googleSignInFragment">
+
+    <fragment
+        android:id="@+id/googleSignInFragment"
+        android:name="com.example.shiftr.view.login.GoogleSignInFragment"
+        android:label="google_sign_in_fragment"
+        tools:layout="@layout/google_sign_in_fragment" />
+</navigation>
