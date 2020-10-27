@@ -3,6 +3,7 @@ package com.example.shiftr.view.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,8 @@ class GoogleSignInFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleSignInResult(task)
+        } else {
+            requireView().showSnackbar("Google sign in failed. Please try again later")
         }
     }
 

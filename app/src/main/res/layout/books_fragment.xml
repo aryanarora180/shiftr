@@ -6,8 +6,10 @@
     tools:context=".view.BooksFragment">
 
     <TextView
+        android:id="@+id/label_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textIsSelectable="true"
         android:text="@string/books" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

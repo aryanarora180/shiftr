@@ -1,6 +1,7 @@
 package com.example.shiftr.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.shiftr.databinding.BooksFragmentBinding
 import com.example.shiftr.viewmodel.BooksViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,5 +29,11 @@ class BooksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        val user = GoogleSignIn.getLastSignedInAccount(requireContext())
+        Log.e(javaClass.simpleName, "User: ${user?.idToken}")
+        user?.let {
+            binding.labelText.text = it.idToken
+        }
     }
 }
