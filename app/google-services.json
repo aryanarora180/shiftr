@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "145123241245",
+    "firebase_url": "https://shiftr-api.firebaseio.com",
+    "project_id": "shiftr-api",
+    "storage_bucket": "shiftr-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145123241245:android:e45c24876ed208f34245f4",
+        "android_client_info": {
+          "package_name": "com.example.shiftr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145123241245-o6u07oh89go3hvtaiiboalhf3vi9eitv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shiftr",
+            "certificate_hash": "47aa7f3be8f3474447e497ca0bf8cff17c0b6e68"
+          }
+        },
+        {
+          "client_id": "145123241245-u0726hm1ngaleqdlneet4cuaf2est8mf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmKPy2RKfwsrn4pKuhzKZgR-Iu2ZZVtB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145123241245-u0726hm1ngaleqdlneet4cuaf2est8mf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

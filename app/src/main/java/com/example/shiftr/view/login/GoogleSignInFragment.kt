@@ -11,7 +11,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.shiftr.MainActivity
+import com.example.shiftr.R
 import com.example.shiftr.databinding.GoogleSignInFragmentBinding
 import com.example.shiftr.view.showSnackbar
 import com.example.shiftr.viewmodel.SignInViewModel
@@ -20,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class GoogleSignInFragment : Fragment() {
@@ -61,8 +62,7 @@ class GoogleSignInFragment : Fragment() {
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         if (completedTask.isSuccessful) {
-            startActivity(Intent(requireActivity(), MainActivity::class.java))
-            requireActivity().finish()
+            findNavController().navigate(R.id.action_googleSignInFragment_to_enterPhoneFragment)
         } else {
             requireView().showSnackbar("Google sign in failed. Please try again later")
         }

@@ -9,5 +9,26 @@
         android:id="@+id/googleSignInFragment"
         android:name="com.example.shiftr.view.login.GoogleSignInFragment"
         android:label="google_sign_in_fragment"
-        tools:layout="@layout/google_sign_in_fragment" />
+        tools:layout="@layout/google_sign_in_fragment" >
+        <action
+            android:id="@+id/action_googleSignInFragment_to_enterPhoneFragment"
+            app:destination="@id/enterPhoneFragment"
+            app:popUpTo="@id/googleSignInFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/enterPhoneFragment"
+        android:name="com.example.shiftr.view.login.EnterPhoneFragment"
+        android:label="enter_phone_fragment"
+        tools:layout="@layout/enter_phone_fragment" >
+        <action
+            android:id="@+id/action_enterPhoneFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment"
+            app:popUpTo="@id/verifyOtpFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyOtpFragment"
+        android:name="com.example.shiftr.view.login.VerifyOtpFragment"
+        android:label="VerifyOtpFragment" />
 </navigation>
