@@ -3,6 +3,7 @@ package com.example.shiftr.data
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.GET
 
 object ApiClient {
 
@@ -23,5 +24,7 @@ object ApiClient {
 
     interface ApiService {
 
+        @GET("todo")
+        suspend fun getTodo(): List<TodoItem>
     }
 }
