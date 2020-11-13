@@ -12,9 +12,7 @@
         tools:layout="@layout/sign_in_fragment">
         <action
             android:id="@+id/action_googleSignInFragment_to_enterPhoneFragment"
-            app:destination="@id/enterPhoneFragment"
-            app:popUpTo="@id/googleSignInFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/enterPhoneFragment" />
         <action
             android:id="@+id/action_googleSignInFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
@@ -26,9 +24,7 @@
         tools:layout="@layout/enter_phone_fragment">
         <action
             android:id="@+id/action_enterPhoneFragment_to_verifyOtpFragment"
-            app:destination="@id/verifyOtpFragment"
-            app:popUpTo="@id/verifyOtpFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/verifyOtpFragment" />
     </fragment>
     <fragment
         android:id="@+id/verifyOtpFragment"
@@ -41,7 +37,7 @@
         <action
             android:id="@+id/action_verifyOtpFragment_to_googleSignInFragment"
             app:destination="@id/googleSignInFragment"
-            app:popUpTo="@id/verifyOtpFragment"
+            app:popUpTo="@id/googleSignInFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -51,8 +47,6 @@
         tools:layout="@layout/email_register_fragment">
         <action
             android:id="@+id/action_registerFragment_to_verifyOtpFragment"
-            app:destination="@id/verifyOtpFragment"
-            app:popUpTo="@id/registerFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/verifyOtpFragment" />
     </fragment>
 </navigation>
