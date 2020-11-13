@@ -59,21 +59,29 @@ class SignInFragment : Fragment() {
             viewModel.googleSignInOptions
         )
 
-        binding.submitButton.setOnClickListener {
-            hideKeyboard()
-            viewModel.signInWithEmail(
-                binding.emailEdit.text.toString(),
-                binding.passwordEdit.text.toString()
-            )
+        with(binding) {
+            submitButton.setOnClickListener {
+                hideKeyboard()
+                viewModel.signInWithEmail(
+                    binding.emailEdit.text.toString(),
+                    binding.passwordEdit.text.toString()
+                )
+            }
+
+            googleSignInButton.setOnClickListener {
+                startForResult.launch(_googleSignInClient.signInIntent)
+            }
+
+            signUpText.setOnClickListener {
+                findNavController().navigate(R.id.action_googleSignInFragment_to_registerFragment)
+            }
         }
 
-        binding.googleSignInButton.setOnClickListener {
-            startForResult.launch(_googleSignInClient.signInIntent)
+        with(viewModel) {
+            emailIsSigningIn.observe(viewLifecycleOwner, emailIsSigningInObserver)
+            emailSignInError.observe(viewLifecycleOwner, emailSignInErrorObserver)
+            emailSignInSuccess.observe(viewLifecycleOwner, emailSignInSuccessObserver)
         }
-
-        viewModel.emailIsSigningIn.observe(viewLifecycleOwner, emailIsSigningInObserver)
-        viewModel.emailSignInError.observe(viewLifecycleOwner, emailSignInErrorObserver)
-        viewModel.emailSignInSuccess.observe(viewLifecycleOwner, emailSignInSuccessObserver)
     }
 
     private val emailIsSigningInObserver = Observer<Boolean> {

@@ -1,6 +1,7 @@
 package com.example.shiftr.data
 
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
@@ -28,5 +29,10 @@ object ApiClient {
         suspend fun loginUserWithEmail(
             @Body body: LoginBody,
         ): GetResponse<LoginResponse>
+
+        @POST("auth/register/")
+        suspend fun registerUserWithEmail(
+            @Body body: RegisterBody,
+        ): ResponseBody
     }
 }

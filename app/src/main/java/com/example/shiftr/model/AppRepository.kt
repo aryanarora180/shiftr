@@ -21,6 +21,31 @@ class AppRepository : AppDataSource {
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
+    override suspend fun registerUserWithEmail(
+        email: String,
+        username: String,
+        password: String,
+        phoneNumber: String,
+        profession: String
+    ): OperationResult<Unit> = try {
+        apiClient.registerUserWithEmail(
+            RegisterBody(
+                email,
+                username,
+                password,
+                phoneNumber,
+                profession
+            )
+        )
+        OperationResult.Success(Unit)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        e.printStackTrace()
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
     private fun getParsedErrorBody(status: Int, errorBody: String?): OperationResult.Error {
         return if (errorBody != null) {
             try {

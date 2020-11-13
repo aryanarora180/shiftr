@@ -1,7 +1,6 @@
 package com.example.shiftr.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -51,6 +50,44 @@ class SignInViewModel @ViewModelInject constructor(
                 }
             }
             _emailIsSigningIn.postValue(false)
+        }
+    }
+
+    private val _emailIsSigningUp = MutableLiveData<Boolean>().apply { value = false }
+    val emailIsSigningUp: LiveData<Boolean>
+        get() = _emailIsSigningUp
+
+    private val _emailSignUpError = MutableLiveData<SingleLiveEvent<String>>()
+    val emailSignUpError: LiveData<SingleLiveEvent<String>>
+        get() = _emailSignUpError
+
+    private val _emailSignUpSuccess = MutableLiveData<SingleLiveEvent<Boolean>>()
+    val emailSignUpSuccess: LiveData<SingleLiveEvent<Boolean>>
+        get() = _emailSignUpSuccess
+
+    fun signUpWithEmail(
+        email: String,
+        username: String,
+        phoneNumber: String,
+        profession: String,
+        password: String,
+        confirmPassword: String,
+        ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _emailIsSigningUp.postValue(true)
+            if (password == confirmPassword) {
+                when (val result = repository.registerUserWithEmail(email, username, password, phoneNumber, profession)) {
+                    is OperationResult.Success -> {
+                        _emailSignUpSuccess.postValue(SingleLiveEvent(true))
+                    }
+                    is OperationResult.Error -> {
+                        _emailSignUpError.postValue(SingleLiveEvent(result.message))
+                    }
+                }
+            } else {
+                _emailSignUpError.postValue(SingleLiveEvent("Passwords must match"))
+            }
+            _emailIsSigningUp.postValue(false)
         }
     }
 

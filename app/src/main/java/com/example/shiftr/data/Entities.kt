@@ -22,6 +22,14 @@ data class Tokens(
     @field:Json(name = "refresh") val refreshToken: String = "",
 )
 
+data class RegisterBody(
+    @field:Json(name = "email") val email: String,
+    @field:Json(name = "username") val username: String,
+    @field:Json(name = "password") val password: String,
+    @field:Json(name = "phone_number") val phoneNumber: String,
+    @field:Json(name = "profession") val profession: String,
+)
+
 data class TodoItem(
     @field:Json(name = "name") val title: String = "",
     @field:Json(name = "desc") val description: String = "",
