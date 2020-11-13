@@ -11,13 +11,12 @@ class AppRepository : AppDataSource {
     override suspend fun loginUserWithEmail(
         email: String,
         password: String
-    ): OperationResult<GetResponse<LoginResponse>> = try {
-        val result = apiClient.loginUserWithEmail(LoginBody(email, password))
-        OperationResult.Success(result)
+    ): OperationResult<LoginResponse> = try {
+        val result = apiClient.loginUserWithEmail(EmailLoginBody(email, password))
+        OperationResult.Success(result.data)
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
-        e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
@@ -27,13 +26,23 @@ class AppRepository : AppDataSource {
         apiClient.registerUserWithEmail(user)
         OperationResult.Success(Unit)
     } catch (e: HttpException) {
-        e.printStackTrace()
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
-        e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
+    override suspend fun loginUserWithGoogle(
+        idToken: String,
+        phoneNumber: String,
+        profession: String
+    ): OperationResult<LoginResponse> = try {
+        val result = apiClient.loginUserWithGoogle(GoogleLoginBody(idToken, phoneNumber, profession))
+        OperationResult.Success(result.data)
+    } catch (e: HttpException) {
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
     private fun getParsedErrorBody(status: Int, errorBody: String?): OperationResult.Error {
         return if (errorBody != null) {
             try {

@@ -35,7 +35,7 @@ class EmailSignInViewModel @ViewModelInject constructor(
             _emailIsSigningIn.postValue(true)
             when (val result = repository.loginUserWithEmail(emailId, password)) {
                 is OperationResult.Success -> {
-                    with(result.data.data.tokens) {
+                    with(result.data.tokens) {
                         dataStoreUtils.storeAccessToken(accessToken)
                         dataStoreUtils.storeRefreshToken(refreshToken)
                     }

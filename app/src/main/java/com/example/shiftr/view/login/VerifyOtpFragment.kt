@@ -51,7 +51,7 @@ class VerifyOtpFragment : Fragment() {
         binding.validateOtpSubHeader.text = "An OTP has been sent to ${verifyOtpViewModel.phoneNumber}"
 
         val options = PhoneAuthOptions.newBuilder(Firebase.auth)
-            .setPhoneNumber(verifyOtpViewModel.phoneNumber)
+            .setPhoneNumber("+91 ${verifyOtpViewModel.phoneNumber}")
             .setTimeout(60L, TimeUnit.SECONDS)
             .setActivity(requireActivity())
             .setCallbacks(otpVerificationCallback)
@@ -64,6 +64,10 @@ class VerifyOtpFragment : Fragment() {
         }
 
         emailSignInViewModel.emailSignUpSuccess.observe(viewLifecycleOwner, emailSignUpSuccessObserver)
+        with(verifyOtpViewModel) {
+            googleSignInError.observe(viewLifecycleOwner, googleSignInErrorObserver)
+            googleSignInSuccess.observe(viewLifecycleOwner, googleSignInSuccessObserver)
+        }
     }
 
     private val otpVerificationCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -91,9 +95,8 @@ class VerifyOtpFragment : Fragment() {
 
         Firebase.auth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // TODO: Send token and phone number to backend server for processing
                 if (args.from == FROM_GOOGLE) {
-
+                    verifyOtpViewModel.signUpWithGoogle()
                 } else {
                     emailSignInViewModel.signUpWithEmail()
                 }
@@ -110,6 +113,19 @@ class VerifyOtpFragment : Fragment() {
                 findNavController().navigate(R.id.action_verifyOtpFragment_to_googleSignInFragment)
             }
         }
+    }
+
+    private val googleSignInSuccessObserver = Observer<SingleLiveEvent<Boolean>> {
+        it.getContentIfNotHandled()?.let { isSuccess ->
+            if (isSuccess) {
+                startActivity(Intent(requireActivity(), MainActivity::class.java))
+                requireActivity().finish()
+            }
+        }
+    }
+
+    private val googleSignInErrorObserver = Observer<SingleLiveEvent<String>> {
+        requireView().showSnackbar(it)
     }
 
     companion object {

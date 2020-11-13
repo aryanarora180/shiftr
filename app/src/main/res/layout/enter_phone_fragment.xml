@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context=".view.login.EnterPhoneFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/enter_phone_coordinator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".view.login.EnterPhoneFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,38 +13,60 @@ tools:context=".view.login.EnterPhoneFragment"
 
         <TextView
             android:id="@+id/login_header_text"
-            android:layout_width="0dp"
+            android:layout_width="379dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="@string/enter_phone_prompt"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/login_phone_text_layout"
+            app:layout_constraintBottom_toTopOf="@+id/profession_text_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profession_text_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/login_phone_text_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profession_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/profession"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_phone_text_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:errorEnabled="true"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/profession_text_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_phone_edit"
-                android:inputType="phone"
-                android:hint="@string/phone_number"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="@string/phone_number"
+                android:singleLine="true"
+                android:inputType="phone" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,16 +74,15 @@ tools:context=".view.login.EnterPhoneFragment"
             android:id="@+id/login_button"
             android:layout_width="250dp"
             android:layout_height="60dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/verify"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:elevation="4dp"
+            android:text="@string/verify"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_phone_text_layout"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintTop_toBottomOf="@+id/login_phone_text_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -36,7 +36,7 @@ class EnterPhoneFragment : Fragment() {
         viewModel.phoneNumberValidated.observe(viewLifecycleOwner, phoneNumberValidatedObserver)
 
         binding.loginButton.setOnClickListener {
-            viewModel.validateEnteredPhoneNumber(binding.loginPhoneEdit.text.toString())
+            viewModel.validateEnteredDetails(binding.loginPhoneEdit.text.toString(), binding.professionEdit.text.toString())
         }
     }
 

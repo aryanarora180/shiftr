@@ -114,6 +114,7 @@ class SignInFragment : Fragment() {
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         if (completedTask.isSuccessful) {
+            completedTask.result?.idToken
             findNavController().navigate(R.id.action_googleSignInFragment_to_enterPhoneFragment)
         } else {
             requireView().showSnackbar("Google sign in failed. Please try again later")

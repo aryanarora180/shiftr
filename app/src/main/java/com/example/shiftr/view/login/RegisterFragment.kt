@@ -34,7 +34,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.submitButton.setOnClickListener {
-            if (verifyOtpViewModel.validateEnteredPhoneNumber(binding.phoneEdit.text.toString())) {
+            if (verifyOtpViewModel.validateEnteredDetails(binding.phoneEdit.text.toString(), null)) {
                 if (emailSignInViewModel.validatePasswords(
                         binding.emailEdit.text.toString(),
                         binding.usernameEdit.text.toString(),

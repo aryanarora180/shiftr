@@ -5,7 +5,7 @@
     <string name="books">Books</string>
     <string name="image_uploads">Image uploads</string>
     <string name="medical_reports">Medical reports</string>
-    <string name="enter_phone_prompt">Enter your phone number to continue</string>
+    <string name="enter_phone_prompt">Enter your profession and phone number to continue</string>
     <string name="phone_number">Phone number</string>
     <string name="verify">Verify</string>
     <string name="enter_otp_prompt">Please enter the one-time password to verify your account</string>

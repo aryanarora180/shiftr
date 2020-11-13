@@ -6,15 +6,19 @@ data class GetResponse<T>(
     @field:Json(name = "data") val data: T,
 )
 
-data class LoginBody(
+data class EmailLoginBody(
     @field:Json(name = "email") val email: String,
     @field:Json(name = "password") val password: String,
 )
 
 data class LoginResponse(
-    @field:Json(name = "email") val email: String,
-    @field:Json(name = "password") val password: String,
-    @field:Json(name = "tokens") val tokens: Tokens,
+    @field:Json(name = "tokens") val tokens: Tokens = Tokens(),
+)
+
+data class GoogleLoginBody(
+    @field:Json(name = "token") val idToken: String,
+    @field:Json(name = "phone_number") val phoneNumber: String,
+    @field:Json(name = "profession") val profession: String,
 )
 
 data class Tokens(
