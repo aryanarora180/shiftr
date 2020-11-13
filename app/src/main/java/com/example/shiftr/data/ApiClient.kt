@@ -28,7 +28,7 @@ object ApiClient {
         @POST("auth/login/")
         suspend fun loginUserWithEmail(
             @Body bodyEmail: EmailLoginBody,
-        ): GetResponse<LoginResponse>
+        ): GetResponse<EmailLoginResponse>
 
         @POST("auth/register/")
         suspend fun registerUserWithEmail(
@@ -38,6 +38,6 @@ object ApiClient {
         @POST("auth/google-auth/")
         suspend fun loginUserWithGoogle(
             @Body body: GoogleLoginBody,
-        ): GetResponse<LoginResponse>
+        ): GetResponse<GoogleLoginResponse>
     }
 }

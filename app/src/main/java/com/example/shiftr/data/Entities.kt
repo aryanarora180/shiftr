@@ -11,14 +11,18 @@ data class EmailLoginBody(
     @field:Json(name = "password") val password: String,
 )
 
-data class LoginResponse(
-    @field:Json(name = "tokens") val tokens: Tokens = Tokens(),
+data class EmailLoginResponse(
+    @field:Json(name = "tokens") val tokens: Tokens,
 )
 
 data class GoogleLoginBody(
     @field:Json(name = "token") val idToken: String,
     @field:Json(name = "phone_number") val phoneNumber: String,
     @field:Json(name = "profession") val profession: String,
+)
+
+data class GoogleLoginResponse(
+    @field:Json(name = "token") val tokenData: EmailLoginResponse,
 )
 
 data class Tokens(

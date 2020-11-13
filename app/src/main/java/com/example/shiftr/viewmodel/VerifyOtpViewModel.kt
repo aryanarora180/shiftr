@@ -59,7 +59,7 @@ class VerifyOtpViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = repository.loginUserWithGoogle(GoogleSignIn.getLastSignedInAccount(_application)?.idToken ?: "", phoneNumber, profession)) {
                 is OperationResult.Success -> {
-                    with(result.data.tokens) {
+                    with(result.data.tokenData.tokens) {
                         dataStoreUtils.storeAccessToken(accessToken)
                         dataStoreUtils.storeRefreshToken(refreshToken)
                     }

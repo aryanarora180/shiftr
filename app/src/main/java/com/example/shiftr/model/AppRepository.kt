@@ -11,7 +11,7 @@ class AppRepository : AppDataSource {
     override suspend fun loginUserWithEmail(
         email: String,
         password: String
-    ): OperationResult<LoginResponse> = try {
+    ): OperationResult<EmailLoginResponse> = try {
         val result = apiClient.loginUserWithEmail(EmailLoginBody(email, password))
         OperationResult.Success(result.data)
     } catch (e: HttpException) {
@@ -35,7 +35,7 @@ class AppRepository : AppDataSource {
         idToken: String,
         phoneNumber: String,
         profession: String
-    ): OperationResult<LoginResponse> = try {
+    ): OperationResult<GoogleLoginResponse> = try {
         val result = apiClient.loginUserWithGoogle(GoogleLoginBody(idToken, phoneNumber, profession))
         OperationResult.Success(result.data)
     } catch (e: HttpException) {

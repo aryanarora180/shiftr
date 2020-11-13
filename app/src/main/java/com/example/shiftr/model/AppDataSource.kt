@@ -1,15 +1,13 @@
 package com.example.shiftr.model
 
 import com.example.shiftr.data.*
-import com.squareup.moshi.Json
-import retrofit2.http.Body
 
 interface AppDataSource {
 
     suspend fun loginUserWithEmail(
         email: String,
         password: String
-    ): OperationResult<LoginResponse>
+    ): OperationResult<EmailLoginResponse>
 
     suspend fun registerUserWithEmail(
         user: RegisterBody
@@ -19,5 +17,5 @@ interface AppDataSource {
         idToken: String,
         phoneNumber: String,
         profession: String,
-    ): OperationResult<LoginResponse>
+    ): OperationResult<GoogleLoginResponse>
 }
