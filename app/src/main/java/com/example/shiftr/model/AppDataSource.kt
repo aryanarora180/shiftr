@@ -3,6 +3,7 @@ package com.example.shiftr.model
 import com.example.shiftr.data.GetResponse
 import com.example.shiftr.data.LoginResponse
 import com.example.shiftr.data.OperationResult
+import com.example.shiftr.data.RegisterBody
 
 interface AppDataSource {
 
@@ -12,10 +13,6 @@ interface AppDataSource {
     ): OperationResult<GetResponse<LoginResponse>>
 
     suspend fun registerUserWithEmail(
-        email: String,
-        username: String,
-        password: String,
-        phoneNumber: String,
-        profession: String,
+        user: RegisterBody
     ): OperationResult<Unit>
 }

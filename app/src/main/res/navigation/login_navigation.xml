@@ -9,7 +9,7 @@
         android:id="@+id/googleSignInFragment"
         android:name="com.example.shiftr.view.login.SignInFragment"
         android:label="google_sign_in_fragment"
-        tools:layout="@layout/sign_in_fragment" >
+        tools:layout="@layout/sign_in_fragment">
         <action
             android:id="@+id/action_googleSignInFragment_to_enterPhoneFragment"
             app:destination="@id/enterPhoneFragment"
@@ -23,7 +23,7 @@
         android:id="@+id/enterPhoneFragment"
         android:name="com.example.shiftr.view.login.EnterPhoneFragment"
         android:label="enter_phone_fragment"
-        tools:layout="@layout/enter_phone_fragment" >
+        tools:layout="@layout/enter_phone_fragment">
         <action
             android:id="@+id/action_enterPhoneFragment_to_verifyOtpFragment"
             app:destination="@id/verifyOtpFragment"
@@ -33,10 +33,26 @@
     <fragment
         android:id="@+id/verifyOtpFragment"
         android:name="com.example.shiftr.view.login.VerifyOtpFragment"
-        android:label="VerifyOtpFragment" />
+        android:label="VerifyOtpFragment"
+        tools:layout="@layout/verify_otp_fragment">
+        <argument
+            android:name="from"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_verifyOtpFragment_to_googleSignInFragment"
+            app:destination="@id/googleSignInFragment"
+            app:popUpTo="@id/verifyOtpFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.shiftr.view.login.RegisterFragment"
         android:label="email_register_fragment"
-        tools:layout="@layout/email_register_fragment" />
+        tools:layout="@layout/email_register_fragment">
+        <action
+            android:id="@+id/action_registerFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

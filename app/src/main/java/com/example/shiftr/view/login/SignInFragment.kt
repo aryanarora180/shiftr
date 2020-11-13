@@ -18,19 +18,19 @@ import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.databinding.SignInFragmentBinding
 import com.example.shiftr.view.showSnackbar
-import com.example.shiftr.viewmodel.SignInViewModel
+import com.example.shiftr.viewmodel.EmailSignInViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class SignInFragment : Fragment() {
 
     private lateinit var binding: SignInFragmentBinding
-    private val viewModel by activityViewModels<SignInViewModel>()
+    private val emailSignInViewModel by activityViewModels<EmailSignInViewModel>()
 
     private lateinit var _googleSignInClient: GoogleSignInClient
     private val startForResult =
@@ -56,13 +56,16 @@ class SignInFragment : Fragment() {
 
         _googleSignInClient = GoogleSignIn.getClient(
             requireContext(),
-            viewModel.googleSignInOptions
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("145123241245-qeld4bjknovdn7b4ppag2m5so0t6e9lm.apps.googleusercontent.com")
+                .requestEmail()
+                .build()
         )
 
         with(binding) {
             submitButton.setOnClickListener {
                 hideKeyboard()
-                viewModel.signInWithEmail(
+                emailSignInViewModel.signInWithEmail(
                     binding.emailEdit.text.toString(),
                     binding.passwordEdit.text.toString()
                 )
@@ -77,7 +80,7 @@ class SignInFragment : Fragment() {
             }
         }
 
-        with(viewModel) {
+        with(emailSignInViewModel) {
             emailIsSigningIn.observe(viewLifecycleOwner, emailIsSigningInObserver)
             emailSignInError.observe(viewLifecycleOwner, emailSignInErrorObserver)
             emailSignInSuccess.observe(viewLifecycleOwner, emailSignInSuccessObserver)

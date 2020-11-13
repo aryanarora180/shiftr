@@ -22,21 +22,9 @@ class AppRepository : AppDataSource {
     }
 
     override suspend fun registerUserWithEmail(
-        email: String,
-        username: String,
-        password: String,
-        phoneNumber: String,
-        profession: String
+        user: RegisterBody
     ): OperationResult<Unit> = try {
-        apiClient.registerUserWithEmail(
-            RegisterBody(
-                email,
-                username,
-                password,
-                phoneNumber,
-                profession
-            )
-        )
+        apiClient.registerUserWithEmail(user)
         OperationResult.Success(Unit)
     } catch (e: HttpException) {
         e.printStackTrace()

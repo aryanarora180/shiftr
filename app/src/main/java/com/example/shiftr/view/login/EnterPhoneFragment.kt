@@ -1,27 +1,25 @@
 package com.example.shiftr.view.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.databinding.EnterPhoneFragmentBinding
 import com.example.shiftr.view.showSnackbar
-import com.example.shiftr.viewmodel.SignInViewModel
+import com.example.shiftr.viewmodel.VerifyOtpViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EnterPhoneFragment : Fragment() {
 
     private lateinit var binding: EnterPhoneFragmentBinding
-    private val viewModel by activityViewModels<SignInViewModel>()
+    private val viewModel by activityViewModels<VerifyOtpViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +48,8 @@ class EnterPhoneFragment : Fragment() {
 
     private val phoneNumberValidatedObserver = Observer { error: SingleLiveEvent<Boolean> ->
         error.getContentIfNotHandled()?.let {
-            findNavController().navigate(R.id.action_enterPhoneFragment_to_verifyOtpFragment)
+            val action = EnterPhoneFragmentDirections.actionEnterPhoneFragmentToVerifyOtpFragment(VerifyOtpFragment.FROM_GOOGLE)
+            findNavController().navigate(action)
         }
     }
 }

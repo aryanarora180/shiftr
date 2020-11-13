@@ -2,20 +2,24 @@ package com.example.shiftr.view.login
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.shiftr.LoginActivity
 import com.example.shiftr.MainActivity
 import com.example.shiftr.R
+import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.databinding.VerifyOtpFragmentBinding
 import com.example.shiftr.view.showSnackbar
-import com.example.shiftr.viewmodel.SignInViewModel
+import com.example.shiftr.viewmodel.EmailSignInViewModel
+import com.example.shiftr.viewmodel.VerifyOtpViewModel
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -28,7 +32,9 @@ import java.util.concurrent.TimeUnit
 class VerifyOtpFragment : Fragment() {
 
     private lateinit var binding: VerifyOtpFragmentBinding
-    private val viewModel by activityViewModels<SignInViewModel>()
+    private val args by navArgs<VerifyOtpFragmentArgs>()
+    private val emailSignInViewModel by activityViewModels<EmailSignInViewModel>()
+    private val verifyOtpViewModel by activityViewModels<VerifyOtpViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +48,10 @@ class VerifyOtpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.validateOtpSubHeader.text = "An OTP has been sent to ${viewModel.phoneNumber}"
+        binding.validateOtpSubHeader.text = "An OTP has been sent to ${verifyOtpViewModel.phoneNumber}"
 
         val options = PhoneAuthOptions.newBuilder(Firebase.auth)
-            .setPhoneNumber(viewModel.phoneNumber)
+            .setPhoneNumber(verifyOtpViewModel.phoneNumber)
             .setTimeout(60L, TimeUnit.SECONDS)
             .setActivity(requireActivity())
             .setCallbacks(otpVerificationCallback)
@@ -53,9 +59,11 @@ class VerifyOtpFragment : Fragment() {
         PhoneAuthProvider.verifyPhoneNumber(options)
 
         binding.validateButton.setOnClickListener {
-            val credential = PhoneAuthProvider.getCredential(viewModel.verificationId, binding.loginOtpEdit.text.toString())
+            val credential = PhoneAuthProvider.getCredential(verifyOtpViewModel.verificationId, binding.loginOtpEdit.text.toString())
             signInWithPhoneAuthCredential(credential)
         }
+
+        emailSignInViewModel.emailSignUpSuccess.observe(viewLifecycleOwner, emailSignUpSuccessObserver)
     }
 
     private val otpVerificationCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -73,7 +81,7 @@ class VerifyOtpFragment : Fragment() {
         }
 
         override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-            viewModel.verificationId = verificationId
+            verifyOtpViewModel.verificationId = verificationId
         }
     }
 
@@ -84,12 +92,28 @@ class VerifyOtpFragment : Fragment() {
         Firebase.auth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // TODO: Send token and phone number to backend server for processing
-                startActivity(Intent(requireActivity(), MainActivity::class.java))
-                requireActivity().finish()
+                if (args.from == FROM_GOOGLE) {
+
+                } else {
+                    emailSignInViewModel.signUpWithEmail()
+                }
             } else {
-                task.exception?.printStackTrace()
                 requireView().showSnackbar("Phone number verification failed. ${task.exception?.message}")
             }
         }
+    }
+
+    private val emailSignUpSuccessObserver = Observer<SingleLiveEvent<Boolean>> {
+        it.getContentIfNotHandled()?.let { isSuccess ->
+            if (isSuccess) {
+                Toast.makeText(requireActivity(), "Please check your email for a verification link", Toast.LENGTH_LONG).show()
+                findNavController().navigate(R.id.action_verifyOtpFragment_to_googleSignInFragment)
+            }
+        }
+    }
+
+    companion object {
+        const val FROM_GOOGLE = 100
+        const val FROM_REGISTRATION = 101
     }
 }
