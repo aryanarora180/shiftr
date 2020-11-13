@@ -3,11 +3,11 @@ package com.example.shiftr.data
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
+import retrofit2.http.*
 
 object ApiClient {
 
-    private const val BASE_URL = ""
+    private const val BASE_URL = "https://shiftrio.herokuapp.com/api/v1/"
 
     private lateinit var apiService: ApiService
     fun build(): ApiService {
@@ -24,7 +24,9 @@ object ApiClient {
 
     interface ApiService {
 
-        @GET("todo")
-        suspend fun getTodo(): List<TodoItem>
+        @POST("auth/login/")
+        suspend fun loginUserWithEmail(
+            @Body body: LoginBody,
+        ): GetResponse<LoginResponse>
     }
 }

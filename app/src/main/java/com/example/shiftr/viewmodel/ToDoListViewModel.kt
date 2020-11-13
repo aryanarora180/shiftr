@@ -35,26 +35,26 @@ class ToDoListViewModel @ViewModelInject constructor(
         get() = _todos
 
     private fun loadTodos() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _isDataLoading.postValue(true)
-            when (val result = repository.getGoodies()) {
-                is OperationResult.Success -> {
-                    if (result.data.isNullOrEmpty()) {
-                        _isEmptyList.postValue(true)
-                    } else {
-                        _todos.postValue(result.data)
-                    }
-                }
-                is OperationResult.Error -> {
-                    _onErrorMessage.postValue(
-                        SingleLiveEvent(
-                            result.message
-                        )
-                    )
-                }
-            }
-            _isDataLoading.postValue(false)
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            _isDataLoading.postValue(true)
+//            when (val result = repository.getGoodies()) {
+//                is OperationResult.Success -> {
+//                    if (result.data.isNullOrEmpty()) {
+//                        _isEmptyList.postValue(true)
+//                    } else {
+//                        _todos.postValue(result.data)
+//                    }
+//                }
+//                is OperationResult.Error -> {
+//                    _onErrorMessage.postValue(
+//                        SingleLiveEvent(
+//                            result.message
+//                        )
+//                    )
+//                }
+//            }
+//            _isDataLoading.postValue(false)
+//        }
     }
 
     init {

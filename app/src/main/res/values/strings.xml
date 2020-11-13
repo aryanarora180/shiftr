@@ -13,4 +13,10 @@
     <string name="enter_valid_phone">Please enter a valid phone number to continue</string>
     <string name="priority">Priority</string>
     <string name="no_todo">You have no TODOs</string>
+    <string name="email">Email</string>
+    <string name="submit">Submit</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="or_connect_with">or connect with</string>
+    <string name="password">Password</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up.</string>
 </resources>

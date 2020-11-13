@@ -30,10 +30,5 @@ class BooksFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val user = GoogleSignIn.getLastSignedInAccount(requireContext())
-        Log.e(javaClass.simpleName, "User: ${user?.idToken}")
-        user?.let {
-            binding.labelText.text = it.idToken
-        }
     }
 }

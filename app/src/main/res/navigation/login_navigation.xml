@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/googleSignInFragment"
-        android:name="com.example.shiftr.view.login.GoogleSignInFragment"
+        android:name="com.example.shiftr.view.login.SignInFragment"
         android:label="google_sign_in_fragment"
-        tools:layout="@layout/google_sign_in_fragment" >
+        tools:layout="@layout/sign_in_fragment" >
         <action
             android:id="@+id/action_googleSignInFragment_to_enterPhoneFragment"
             app:destination="@id/enterPhoneFragment"

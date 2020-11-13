@@ -2,6 +2,26 @@ package com.example.shiftr.data
 
 import com.squareup.moshi.Json
 
+data class GetResponse<T>(
+    @field:Json(name = "data") val data: T,
+)
+
+data class LoginBody(
+    @field:Json(name = "email") val email: String,
+    @field:Json(name = "password") val password: String,
+)
+
+data class LoginResponse(
+    @field:Json(name = "email") val email: String,
+    @field:Json(name = "password") val password: String,
+    @field:Json(name = "tokens") val tokens: Tokens,
+)
+
+data class Tokens(
+    @field:Json(name = "access") val accessToken: String = "",
+    @field:Json(name = "refresh") val refreshToken: String = "",
+)
+
 data class TodoItem(
     @field:Json(name = "name") val title: String = "",
     @field:Json(name = "desc") val description: String = "",
