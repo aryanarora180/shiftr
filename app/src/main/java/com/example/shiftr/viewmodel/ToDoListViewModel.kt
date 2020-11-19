@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shiftr.data.OperationResult
 import com.example.shiftr.data.SingleLiveEvent
-import com.example.shiftr.data.TodoItem
+import com.example.shiftr.data.Todo
 import com.example.shiftr.model.AppDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,31 +30,32 @@ class ToDoListViewModel @ViewModelInject constructor(
     val onMessageError: LiveData<SingleLiveEvent<String>>
         get() = _onErrorMessage
 
-    private val _todos = MutableLiveData<List<TodoItem>>()
-    val todos: LiveData<List<TodoItem>>
+    private val _todos = MutableLiveData<List<Todo>>()
+    val todos: LiveData<List<Todo>>
         get() = _todos
 
     private fun loadTodos() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            _isDataLoading.postValue(true)
-//            when (val result = repository.getGoodies()) {
-//                is OperationResult.Success -> {
-//                    if (result.data.isNullOrEmpty()) {
-//                        _isEmptyList.postValue(true)
-//                    } else {
-//                        _todos.postValue(result.data)
-//                    }
-//                }
-//                is OperationResult.Error -> {
-//                    _onErrorMessage.postValue(
-//                        SingleLiveEvent(
-//                            result.message
-//                        )
-//                    )
-//                }
-//            }
-//            _isDataLoading.postValue(false)
-//        }
+        viewModelScope.launch(Dispatchers.IO) {
+            _isDataLoading.postValue(true)
+            when (val result = repository.getTodo()) {
+                is OperationResult.Success -> {
+                    if (result.data.isNullOrEmpty()) {
+                        _isEmptyList.postValue(true)
+                    } else {
+                        _isEmptyList.postValue(false)
+                        _todos.postValue(result.data)
+                    }
+                }
+                is OperationResult.Error -> {
+                    _onErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                }
+            }
+            _isDataLoading.postValue(false)
+        }
     }
 
     init {

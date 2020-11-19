@@ -1,12 +1,13 @@
 package com.example.shiftr.model
 
+import android.content.Context
 import com.example.shiftr.data.*
 import org.json.JSONObject
 import retrofit2.HttpException
 
-class AppRepository : AppDataSource {
+class AppRepository(context: Context) : AppDataSource {
 
-    private val apiClient = ApiClient.build()
+    private val apiClient = ApiClient.build(context)
 
     override suspend fun loginUserWithEmail(
         email: String,
@@ -15,8 +16,10 @@ class AppRepository : AppDataSource {
         val result = apiClient.loginUserWithEmail(EmailLoginBody(email, password))
         OperationResult.Success(result.data)
     } catch (e: HttpException) {
+        e.printStackTrace()
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
+        e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
@@ -36,13 +39,26 @@ class AppRepository : AppDataSource {
         phoneNumber: String,
         profession: String
     ): OperationResult<GoogleLoginResponse> = try {
-        val result = apiClient.loginUserWithGoogle(GoogleLoginBody(idToken, phoneNumber, profession))
+        val result =
+            apiClient.loginUserWithGoogle(GoogleLoginBody(idToken, phoneNumber, profession))
         OperationResult.Success(result.data)
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
+
+    override suspend fun getTodo(): OperationResult<List<Todo>> = try {
+        val result = apiClient.getTodo()
+        OperationResult.Success(result)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        e.printStackTrace()
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
     private fun getParsedErrorBody(status: Int, errorBody: String?): OperationResult.Error {
         return if (errorBody != null) {
             try {

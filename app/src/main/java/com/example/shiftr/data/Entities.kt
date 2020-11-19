@@ -25,6 +25,14 @@ data class GoogleLoginResponse(
     @field:Json(name = "token") val tokenData: EmailLoginResponse,
 )
 
+data class RefreshTokenBody(
+    @field:Json(name = "refresh") val refreshToken: String,
+)
+
+data class RefreshTokenResponse(
+    @field:Json(name = "refresh") val newAccessToken: String,
+)
+
 data class Tokens(
     @field:Json(name = "access") val accessToken: String = "",
     @field:Json(name = "refresh") val refreshToken: String = "",
@@ -38,23 +46,18 @@ data class RegisterBody(
     @field:Json(name = "profession") val profession: String,
 )
 
-data class TodoItem(
+data class Todo(
+    @field:Json(name = "id") val id: Int = 0,
     @field:Json(name = "name") val title: String = "",
     @field:Json(name = "desc") val description: String = "",
-    @field:Json(name = "category") val category: String = "",
-    @field:Json(name = "color") val color: Int = 100,
-    @field:Json(name = "priority") val isPriority: Int = NOT_PRIORITY,
-    @field:Json(name = "notification_enabled") val notificationEnabled: Int = IS_NOT_NOTIFICATION_ENABLED,
-) {
-    companion object {
-        const val NOT_PRIORITY = 0
-        const val IS_PRIORITY = 1
+    @field:Json(name = "color") val color: String = "#FFFFFF",
+)
 
-        const val IS_NOT_NOTIFICATION_ENABLED = 0
-        const val IS_NOTIFICATION_ENABLED = 1
-
-        const val COLOR_RED = 100
-        const val COLOR_ORANGE = 101
-        const val COLOR_YELLOW = 102
-    }
-}
+data class TodoItem(
+    @field:Json(name = "id") val id: Int = 0,
+    @field:Json(name = "todo") val title: String = "",
+    @field:Json(name = "todo_list") val todoId: Int = 0,
+    @field:Json(name = "done") val color: String = "#FFFFFF",
+    @field:Json(name = "priority") val priority: Int = 0,
+    @field:Json(name = "deadline") val deadline: String = "",
+)

@@ -14,7 +14,7 @@ class DataStoreUtils(context: Context) {
     fun getAccessToken(): String? = sharedPreferences.getString(KEY_ACCESS_TOKEN, null)
     fun storeAccessToken(accessToken: String) {
         with(sharedPreferences.edit()) {
-            this.putString(KEY_ACCESS_TOKEN, accessToken)
+            putString(KEY_ACCESS_TOKEN, "Bearer $accessToken")
             apply()
         }
     }
@@ -22,7 +22,7 @@ class DataStoreUtils(context: Context) {
     fun getRefreshToken(): String? = sharedPreferences.getString(KEY_REFRESH_TOKEN, null)
     fun storeRefreshToken(refreshToken: String) {
         with(sharedPreferences.edit()) {
-            this.putString(KEY_REFRESH_TOKEN, refreshToken)
+            putString(KEY_REFRESH_TOKEN, refreshToken)
             apply()
         }
     }

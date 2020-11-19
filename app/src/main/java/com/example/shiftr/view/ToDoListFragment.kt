@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.shiftr.data.SingleLiveEvent
-import com.example.shiftr.data.TodoItem
+import com.example.shiftr.data.Todo
 import com.example.shiftr.databinding.ToDoListFragmentBinding
 import com.example.shiftr.view.adapter.TodoAdapter
 import com.example.shiftr.viewmodel.ToDoListViewModel
@@ -38,17 +38,19 @@ class ToDoListFragment : Fragment() {
         }
         binding.todoRecycler.adapter = todoAdapter
 
-        viewModel.isDataLoading.observe(viewLifecycleOwner, isDataLoadingObserver)
-        viewModel.isEmptyList.observe(viewLifecycleOwner, isEmptyListObserver)
-        viewModel.todos.observe(viewLifecycleOwner, todoObserver)
-        viewModel.onMessageError.observe(viewLifecycleOwner, onErrorObserver)
+        with(viewModel) {
+            isDataLoading.observe(viewLifecycleOwner, isDataLoadingObserver)
+            isEmptyList.observe(viewLifecycleOwner, isEmptyListObserver)
+            todos.observe(viewLifecycleOwner, todoObserver)
+            onMessageError.observe(viewLifecycleOwner, onErrorObserver)
+        }
     }
 
     private val isDataLoadingObserver = Observer<Boolean> { isLoading ->
         with(binding) {
             if (isLoading) {
                 todoProgress.visibility = View.VISIBLE
-                todoRecycler.visibility = View.GONE
+                todoRecycler.visibility = View.INVISIBLE
             } else {
                 todoProgress.visibility = View.GONE
             }
@@ -58,18 +60,17 @@ class ToDoListFragment : Fragment() {
     private val isEmptyListObserver = Observer<Boolean> { isEmpty ->
         with(binding) {
             if (isEmpty) {
-                todoRecycler.visibility = View.GONE
+                todoRecycler.visibility = View.INVISIBLE
                 noTodoImage.visibility = View.VISIBLE
                 noTodoText.visibility = View.VISIBLE
             } else {
-                todoRecycler.visibility = View.VISIBLE
                 noTodoImage.visibility = View.GONE
                 noTodoText.visibility = View.GONE
             }
         }
     }
 
-    private val todoObserver = Observer<List<TodoItem>> { todos ->
+    private val todoObserver = Observer<List<Todo>> { todos ->
         with(binding) {
             todoRecycler.visibility = View.VISIBLE
             todoAdapter.data = todos

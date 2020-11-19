@@ -18,4 +18,6 @@ interface AppDataSource {
         phoneNumber: String,
         profession: String,
     ): OperationResult<GoogleLoginResponse>
+
+    suspend fun getTodo(): OperationResult<List<Todo>>
 }

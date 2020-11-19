@@ -17,8 +17,8 @@ object MVVMModule {
 
     @Provides
     @Singleton
-    fun providerRepository(): AppDataSource {
-        return AppRepository()
+    fun providerRepository(@ApplicationContext application: Context): AppDataSource {
+        return AppRepository(application)
     }
 
     @Provides
