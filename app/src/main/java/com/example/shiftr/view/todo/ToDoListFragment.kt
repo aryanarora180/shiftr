@@ -1,16 +1,19 @@
-package com.example.shiftr.view
+package com.example.shiftr.view.todo
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.data.Todo
 import com.example.shiftr.databinding.ToDoListFragmentBinding
+import com.example.shiftr.view.SpringyRecycler
 import com.example.shiftr.view.adapter.TodoAdapter
+import com.example.shiftr.view.showSnackbar
 import com.example.shiftr.viewmodel.ToDoListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ToDoListFragment : Fragment() {
 
     private lateinit var binding: ToDoListFragmentBinding
-    private val viewModel by viewModels<ToDoListViewModel>()
+    private val viewModel by activityViewModels<ToDoListViewModel>()
 
     private val todoAdapter = TodoAdapter()
 
@@ -36,7 +39,14 @@ class ToDoListFragment : Fragment() {
         todoAdapter.listener = { todoItem ->
             // TODO: Handle Todo click
         }
-        binding.todoRecycler.adapter = todoAdapter
+        binding.todoRecycler.apply {
+            edgeEffectFactory =
+                SpringyRecycler.springEdgeEffectFactory<TodoAdapter.TodoViewHolder>()
+            adapter = todoAdapter
+        }
+        binding.addTodoFab.setOnClickListener {
+            AddTodoBottomSheetFragment.newInstance().show(childFragmentManager, "add-todo")
+        }
 
         with(viewModel) {
             isDataLoading.observe(viewLifecycleOwner, isDataLoadingObserver)

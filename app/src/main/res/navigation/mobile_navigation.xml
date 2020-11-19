@@ -21,7 +21,7 @@
         tools:layout="@layout/image_uploads_fragment" />
     <fragment
         android:id="@+id/toDoListFragment"
-        android:name="com.example.shiftr.view.ToDoListFragment"
+        android:name="com.example.shiftr.view.todo.ToDoListFragment"
         android:label="@string/to_do_list"
         tools:layout="@layout/to_do_list_fragment" />
     <fragment

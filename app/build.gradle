@@ -72,4 +72,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.0.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation "androidx.browser:browser:1.2.0"
+    implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
 }

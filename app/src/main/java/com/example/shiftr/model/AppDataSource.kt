@@ -20,4 +20,10 @@ interface AppDataSource {
     ): OperationResult<GoogleLoginResponse>
 
     suspend fun getTodo(): OperationResult<List<Todo>>
+
+    suspend fun addTodo(
+        name: String,
+        description: String,
+        color: String,
+    ): OperationResult<Todo>
 }

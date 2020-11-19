@@ -58,6 +58,38 @@ class ToDoListViewModel @ViewModelInject constructor(
         }
     }
 
+    private val _isAddingTodo = MutableLiveData<SingleLiveEvent<Boolean>>()
+    val isAddingTodo: LiveData<SingleLiveEvent<Boolean>>
+        get() = _isAddingTodo
+
+    private val _onAddTodoErrorMessage = MutableLiveData<SingleLiveEvent<String>>()
+    val onAddTodoErrorMessage: LiveData<SingleLiveEvent<String>>
+        get() = _onAddTodoErrorMessage
+
+    private val _onAddTodoSuccess = MutableLiveData<SingleLiveEvent<Boolean>>()
+    val onAddTodoSuccess: LiveData<SingleLiveEvent<Boolean>>
+        get() = _onAddTodoSuccess
+
+    fun addTodo(name: String, description: String, color: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isAddingTodo.postValue(SingleLiveEvent(true))
+            when (val result = repository.addTodo(name, description, color)) {
+                is OperationResult.Success -> {
+                    loadTodos()
+                    _onAddTodoSuccess.postValue(SingleLiveEvent(true))
+                }
+                is OperationResult.Error -> {
+                    _onAddTodoErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                }
+            }
+            _isAddingTodo.postValue(SingleLiveEvent(false))
+        }
+    }
+
     init {
         loadTodos()
     }

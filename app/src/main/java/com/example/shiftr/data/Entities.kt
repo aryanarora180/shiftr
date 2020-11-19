@@ -49,7 +49,13 @@ data class RegisterBody(
 data class Todo(
     @field:Json(name = "id") val id: Int = 0,
     @field:Json(name = "name") val title: String = "",
-    @field:Json(name = "desc") val description: String = "",
+    @field:Json(name = "description") val description: String = "",
+    @field:Json(name = "color") val color: String = "#FFFFFF",
+)
+
+data class TodoBody(
+    @field:Json(name = "name") val title: String = "",
+    @field:Json(name = "description") val description: String = "",
     @field:Json(name = "color") val color: String = "#FFFFFF",
 )
 

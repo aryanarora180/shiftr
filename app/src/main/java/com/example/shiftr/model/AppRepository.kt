@@ -52,6 +52,20 @@ class AppRepository(context: Context) : AppDataSource {
         val result = apiClient.getTodo()
         OperationResult.Success(result)
     } catch (e: HttpException) {
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
+    override suspend fun addTodo(
+        name: String,
+        description: String,
+        color: String
+    ): OperationResult<Todo> = try {
+        val result =
+            apiClient.addTodo(TodoBody(name, description, color))
+        OperationResult.Success(result)
+    } catch (e: HttpException) {
         e.printStackTrace()
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
