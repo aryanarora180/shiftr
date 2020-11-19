@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.databinding.AddTodoFragmentBinding
 import com.example.shiftr.view.showSnackbar
@@ -79,7 +80,21 @@ class AddTodoBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun getSelectedColor(): String {
-        return "#D32F2F"
+        return when (binding.colorChipGroup.checkedChipId) {
+            R.id.chip_red -> "#D32F2F"
+            R.id.chip_pink -> "#C2185B"
+            R.id.chip_purple -> "#512DA8"
+            R.id.chip_indigo -> "#303F9F"
+            R.id.chip_blue -> "#1976D2"
+            R.id.chip_cyan -> "#0097A7"
+            R.id.chip_teal -> "#00796B"
+            R.id.chip_green -> "#388E3C"
+            R.id.chip_amber -> "#FFA000"
+            R.id.chip_orange -> "#E64A19"
+            R.id.chip_brown -> "#5D4037"
+            R.id.chip_gray -> "#455A64"
+            else -> "#D32F2F"
+        }
     }
 
     companion object {

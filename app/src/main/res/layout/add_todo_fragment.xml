@@ -65,15 +65,21 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/color_chip_group"
+            <HorizontalScrollView
+                android:id="@+id/colors_horizontal_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description_layout"
+                app:layout_constraintTop_toBottomOf="@+id/description_layout">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/color_chip_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:singleLine="true"
+                app:selectionRequired="true"
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
@@ -82,18 +88,112 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/red"
+                    android:layout_marginStart="16dp"
                     android:checked="true"
                     app:chipBackgroundColor="#D32F2F" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_pink"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pink"
+                    android:checked="true"
+                    app:chipBackgroundColor="#C2185B" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_purple"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Purple"
+                    android:checked="true"
+                    app:chipBackgroundColor="#512DA8" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_indigo"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Indigo"
+                    android:checked="true"
+                    app:chipBackgroundColor="#303F9F" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_blue"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Blue"
+                    android:checked="true"
+                    app:chipBackgroundColor="#1976D2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cyan"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cyan"
+                    android:checked="true"
+                    app:chipBackgroundColor="#0097A7" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_teal"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teal"
+                    android:checked="true"
+                    app:chipBackgroundColor="#00796B" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_green"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Green"
+                    android:checked="true"
+                    app:chipBackgroundColor="#388E3C" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_amber"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amber"
+                    android:checked="true"
+                    app:chipBackgroundColor="#FFA000" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_orange"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/green"
-                    app:chipBackgroundColor="#388E3C" />
+                    android:text="Orange"
+                    android:checked="true"
+                    app:chipBackgroundColor="#E64A19" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_brown"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Brown"
+                    android:checked="true"
+                    app:chipBackgroundColor="#5D4037" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_gray"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gray"
+                    android:layout_marginEnd="16dp"
+                    app:chipBackgroundColor="#455A64" />
 
             </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/apply_button"
@@ -109,7 +209,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/color_chip_group" />
+                app:layout_constraintTop_toBottomOf="@+id/colors_horizontal_scroll" />
 
             <ProgressBar
                 android:id="@+id/apply_progress"
