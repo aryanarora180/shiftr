@@ -66,5 +66,8 @@ object ApiClient {
         suspend fun deleteTodo(
             @Path("id") id: Int
         )
+
+        @GET("todo/todo-items/")
+        suspend fun getTodoItems(): List<TodoItem>
     }
 }

@@ -14,7 +14,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
+import com.example.shiftr.data.Todo
+import com.example.shiftr.data.TodoItem
 import com.example.shiftr.databinding.ViewTodoItemsFragmentBinding
+import com.example.shiftr.view.SpringyRecycler
+import com.example.shiftr.view.adapter.TodoAdapter
+import com.example.shiftr.view.adapter.TodoItemAdapter
 import com.example.shiftr.view.showSnackbar
 import com.example.shiftr.viewmodel.ToDoListViewModel
 import com.example.shiftr.viewmodel.ViewTodoViewModel
@@ -28,6 +33,8 @@ class ViewTodoFragment : Fragment() {
     private val args by navArgs<ViewTodoFragmentArgs>()
     private val viewModel by viewModels<ViewTodoViewModel>()
     private val todoViewModel by activityViewModels<ToDoListViewModel>()
+
+    private val todoItemsAdapter = TodoItemAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,11 +58,62 @@ class ViewTodoFragment : Fragment() {
             deleteImage.setOnClickListener { showDeleteConfirmation() }
         }
 
+        todoItemsAdapter.listener = { todoItem ->
+            // TODO
+        }
+        binding.todoItemsRecycler.apply {
+            edgeEffectFactory =
+                SpringyRecycler.springEdgeEffectFactory<TodoItemAdapter.TodoItemViewHolder>()
+            adapter = todoItemsAdapter
+        }
+
         with(viewModel) {
+            todoItems.observe(viewLifecycleOwner, todoItemsObserver)
+            isEmptyList.observe(viewLifecycleOwner, isEmptyListObserver)
+            onMessageError.observe(viewLifecycleOwner, onErrorObserver)
+            isDataLoading.observe(viewLifecycleOwner, isDataLoadingObserver)
+
             isDeletingTodo.observe(viewLifecycleOwner, isDeletingTodoObserver)
             onDeleteTodoErrorMessage.observe(viewLifecycleOwner, onDeleteTodoErrorMessageObserver)
             onDeleteTodoSuccess.observe(viewLifecycleOwner, onDeleteTodoSuccessObserver)
         }
+    }
+
+    private val isDataLoadingObserver = Observer<Boolean> { isLoading ->
+        with(binding) {
+            if (isLoading) {
+                todoProgress.visibility = View.VISIBLE
+                todoItemsRecycler.visibility = View.GONE
+                noTodoImage.visibility = View.GONE
+                noTodoText.visibility = View.GONE
+            } else {
+                todoProgress.visibility = View.GONE
+            }
+        }
+    }
+
+    private val isEmptyListObserver = Observer<Boolean> { isEmpty ->
+        with(binding) {
+            if (isEmpty) {
+                todoItemsRecycler.visibility = View.INVISIBLE
+                noTodoImage.visibility = View.VISIBLE
+                noTodoText.visibility = View.VISIBLE
+            } else {
+                noTodoImage.visibility = View.GONE
+                noTodoText.visibility = View.GONE
+            }
+        }
+    }
+
+    private val todoItemsObserver = Observer<List<TodoItem>> { items ->
+        with(binding) {
+            todoItemsRecycler.visibility = View.VISIBLE
+            todoItemsAdapter.data = items
+        }
+    }
+
+    private val onErrorObserver = Observer<SingleLiveEvent<String>> { error ->
+        requireView().showSnackbar(error)
     }
 
     private val isDeletingTodoObserver = Observer<Boolean> {

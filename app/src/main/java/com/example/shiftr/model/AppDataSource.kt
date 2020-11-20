@@ -30,4 +30,6 @@ interface AppDataSource {
     suspend fun deleteTodo(
         id: Int,
     ): OperationResult<Unit>
+
+    suspend fun getTodoItems(todoId: Int): OperationResult<List<TodoItem>>
 }
