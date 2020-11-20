@@ -1,6 +1,8 @@
 package com.example.shiftr.model
 
 import com.example.shiftr.data.*
+import com.squareup.moshi.Json
+import retrofit2.http.Body
 
 interface AppDataSource {
 
@@ -32,4 +34,12 @@ interface AppDataSource {
     ): OperationResult<Unit>
 
     suspend fun getTodoItems(todoId: Int): OperationResult<List<TodoItem>>
+
+    suspend fun addTodoItem(
+        itemText: String,
+        todoId: Int,
+        done: Boolean,
+        priority: String,
+        deadline: String,
+    ): OperationResult<TodoItem>
 }

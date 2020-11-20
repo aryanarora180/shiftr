@@ -14,11 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
-import com.example.shiftr.data.Todo
 import com.example.shiftr.data.TodoItem
 import com.example.shiftr.databinding.ViewTodoItemsFragmentBinding
 import com.example.shiftr.view.SpringyRecycler
-import com.example.shiftr.view.adapter.TodoAdapter
 import com.example.shiftr.view.adapter.TodoItemAdapter
 import com.example.shiftr.view.showSnackbar
 import com.example.shiftr.viewmodel.ToDoListViewModel
@@ -54,6 +52,10 @@ class ViewTodoFragment : Fragment() {
             todoFrame.backgroundTintList = ColorStateList.valueOf(color)
             nameText.text = args.todo.title
             descriptionText.text = args.todo.description
+
+            addTodoItemFab.setOnClickListener {
+                AddTodoItemFragment(viewModel).show(childFragmentManager, "add-todo-item")
+            }
 
             deleteImage.setOnClickListener { showDeleteConfirmation() }
         }

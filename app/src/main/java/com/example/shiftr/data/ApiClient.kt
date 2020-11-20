@@ -69,5 +69,10 @@ object ApiClient {
 
         @GET("todo/todo-items/")
         suspend fun getTodoItems(): List<TodoItem>
+
+        @POST("todo/todo-items/")
+        suspend fun addTodoItem(
+            @Body body: TodoItemBody
+        ): TodoItem
     }
 }

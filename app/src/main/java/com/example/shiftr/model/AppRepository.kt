@@ -99,6 +99,21 @@ class AppRepository(context: Context) : AppDataSource {
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
+    override suspend fun addTodoItem(
+        itemText: String,
+        todoId: Int,
+        done: Boolean,
+        priority: String,
+        deadline: String
+    ): OperationResult<TodoItem> = try {
+        val result = apiClient.addTodoItem(TodoItemBody(itemText, todoId, done, priority, deadline))
+        OperationResult.Success(result)
+    } catch (e: HttpException) {
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
     private fun getParsedErrorBody(status: Int, errorBody: String?): OperationResult.Error {
         return if (errorBody != null) {
             try {

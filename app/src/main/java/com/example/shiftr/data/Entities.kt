@@ -1,6 +1,7 @@
 package com.example.shiftr.data
 
 import android.os.Parcelable
+import com.example.shiftr.data.TodoItem.Companion.PRIORITY_LOW
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
@@ -62,38 +63,46 @@ data class TodoBody(
     @field:Json(name = "color") val color: String = "#FFFFFF",
 )
 
+data class TodoItemBody(
+    @field:Json(name = "todo") val itemText: String = "",
+    @field:Json(name = "todo_list") val todoId: Int = 0,
+    @field:Json(name = "done") val done: Boolean = false,
+    @field:Json(name = "priority") val priority: String = PRIORITY_LOW,
+    @field:Json(name = "deadline") val deadline: String = "",
+)
+
 data class TodoItem(
     @field:Json(name = "id") val itemId: Int = 0,
     @field:Json(name = "todo") val itemText: String = "",
     @field:Json(name = "todo_list") val todoId: Int = 0,
     @field:Json(name = "done") val done: Boolean = false,
-    @field:Json(name = "priority") val priority: String = DEADLINE_LOW,
+    @field:Json(name = "priority") val priority: String = PRIORITY_LOW,
     @field:Json(name = "deadline") val deadline: String = "",
 ) {
     companion object {
-        const val DEADLINE_LOW = "low"
-        const val DEADLINE_IMPORTANT = "imp"
-        const val DEADLINE_URGENT = "urg"
+        const val PRIORITY_LOW = "low"
+        const val PRIORITY_IMPORTANT = "imp"
+        const val PRIORITY_URGENT = "urg"
     }
 
     fun getPriorityAsInt() = when (priority) {
-        DEADLINE_LOW -> 0
-        DEADLINE_IMPORTANT -> 1
-        DEADLINE_URGENT -> 2
+        PRIORITY_LOW -> 0
+        PRIORITY_IMPORTANT -> 1
+        PRIORITY_URGENT -> 2
         else -> 0
     }
 
     fun getPriorityColor()  = when (priority) {
-        DEADLINE_LOW -> "#FFA000"
-        DEADLINE_IMPORTANT -> "#E64A19"
-        DEADLINE_URGENT -> "#D32F2F"
+        PRIORITY_LOW -> "#FFA000"
+        PRIORITY_IMPORTANT -> "#E64A19"
+        PRIORITY_URGENT -> "#D32F2F"
         else -> "#FFA000"
     }
 
     fun getPriorityText()  = when (priority) {
-        DEADLINE_LOW -> "Low"
-        DEADLINE_IMPORTANT -> "Important"
-        DEADLINE_URGENT -> "Urgent"
+        PRIORITY_LOW -> "Low"
+        PRIORITY_IMPORTANT -> "Important"
+        PRIORITY_URGENT -> "Urgent"
         else -> "Low"
     }
 }
