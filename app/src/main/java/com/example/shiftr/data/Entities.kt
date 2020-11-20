@@ -30,7 +30,7 @@ data class RefreshTokenBody(
 )
 
 data class RefreshTokenResponse(
-    @field:Json(name = "refresh") val newAccessToken: String,
+    @field:Json(name = "access") val newAccessToken: String,
 )
 
 data class Tokens(

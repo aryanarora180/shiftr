@@ -4,10 +4,9 @@ import android.content.Context
 import android.util.Log
 import com.example.shiftr.model.DataStoreUtils
 import kotlinx.coroutines.runBlocking
-import okhttp3.Interceptor
-import okhttp3.Response
+import okhttp3.*
 
-class AuthInterceptor(private val context: Context) : Interceptor {
+class AuthInterceptor(private val context: Context) : Interceptor, Authenticator {
 
     private val dataStoreUtils = DataStoreUtils(context)
 
@@ -15,33 +14,29 @@ class AuthInterceptor(private val context: Context) : Interceptor {
         // Build the request with the header as the auth token, if it exists
         val mainRequest = chain.request().newBuilder()
         dataStoreUtils.getAccessToken()?.let {
-            Log.e(javaClass.simpleName, "Authorization: $it")
             mainRequest.addHeader("Authorization", it)
         }
 
         // Proceed with the request now
-        val mainResponse = chain.proceed(mainRequest.build())
+        return chain.proceed(mainRequest.build())
+    }
 
-        // Request is unauthorized
-//        if (mainResponse.code() == 401) {
-//            Log.e(javaClass.simpleName, "401")
-//            runBlocking {
-//                try {
-//                    // Get the new access token and store it
-//                    val response = ApiClient.build(context).refreshToken(
-//                        RefreshTokenBody(
-//                            dataStoreUtils.getRefreshToken() ?: ""
-//                        )
-//                    )
-//                    dataStoreUtils.storeAccessToken(response.newAccessToken)
-//
-//                    // Switch the authorization header and proceed with the request again
-//                    val newMainRequest = mainRequest.header("Authorization", dataStoreUtils.getAccessToken() ?: "")
-//                    chain.proceed(newMainRequest.build())
-//                } catch (e: Exception) { e.printStackTrace() }
-//            }
-//        }
+    override fun authenticate(route: Route?, response: Response): Request? {
+        val updatedToken = getUpdatedToken()
+        return response.request().newBuilder()
+            .header("Authorization", updatedToken)
+            .build()
+    }
 
-        return mainResponse
+    private fun getUpdatedToken(): String {
+        runBlocking {
+            try {
+                val authTokenResponse = ApiClient.build(context).refreshToken(RefreshTokenBody(dataStoreUtils.getRefreshToken()!!)).newAccessToken
+                dataStoreUtils.storeAccessToken(authTokenResponse)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        return dataStoreUtils.getAccessToken() ?: ""
     }
 }

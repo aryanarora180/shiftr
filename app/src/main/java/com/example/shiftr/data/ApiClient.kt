@@ -15,6 +15,7 @@ object ApiClient {
 
     private fun okHttpClient(context: Context): OkHttpClient {
         return OkHttpClient.Builder()
+            .authenticator(AuthInterceptor(context))
             .addInterceptor(AuthInterceptor(context))
             .build()
     }
