@@ -1,13 +1,17 @@
 package com.example.shiftr.view.todo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.data.Todo
 import com.example.shiftr.databinding.ToDoListFragmentBinding
@@ -35,9 +39,11 @@ class ToDoListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.black)
 
         todoAdapter.listener = { todoItem ->
-            // TODO: Handle Todo click
+            val action = ToDoListFragmentDirections.actionToDoListFragmentToViewTodoFragment(todoItem)
+            findNavController().navigate(action)
         }
         binding.todoRecycler.apply {
             edgeEffectFactory =

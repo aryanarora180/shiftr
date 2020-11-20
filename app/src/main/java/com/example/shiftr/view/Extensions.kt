@@ -29,8 +29,8 @@ val RecyclerView.ViewHolder.translationY: SpringAnimation
         .setSpring(
             SpringForce()
                 .setFinalPosition(0f)
-                .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
-                .setStiffness(SpringForce.STIFFNESS_MEDIUM)
+                .setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY)
+                .setStiffness(SpringForce.STIFFNESS_LOW)
         )
 
 class SpringyRecycler {

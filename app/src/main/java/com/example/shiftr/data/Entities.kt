@@ -1,6 +1,8 @@
 package com.example.shiftr.data
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 
 data class GetResponse<T>(
     @field:Json(name = "data") val data: T,
@@ -46,12 +48,13 @@ data class RegisterBody(
     @field:Json(name = "profession") val profession: String,
 )
 
+@Parcelize
 data class Todo(
     @field:Json(name = "id") val id: Int = 0,
     @field:Json(name = "name") val title: String = "",
     @field:Json(name = "description") val description: String = "",
     @field:Json(name = "color") val color: String = "#FFFFFF",
-)
+) : Parcelable
 
 data class TodoBody(
     @field:Json(name = "name") val title: String = "",

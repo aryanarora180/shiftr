@@ -26,7 +26,6 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val todo = data[position]
-        Log.e(javaClass.simpleName, "Binding $todo")
 
         with(holder.binding) {
             todoCard.setCardBackgroundColor(Color.parseColor(todo.color))

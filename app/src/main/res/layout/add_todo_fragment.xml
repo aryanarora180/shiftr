@@ -69,6 +69,7 @@
                 android:id="@+id/colors_horizontal_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description_layout">
@@ -98,7 +99,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pink"
-                    android:checked="true"
                     app:chipBackgroundColor="#C2185B" />
 
                 <com.google.android.material.chip.Chip
@@ -107,7 +107,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Purple"
-                    android:checked="true"
                     app:chipBackgroundColor="#512DA8" />
 
                 <com.google.android.material.chip.Chip
@@ -116,7 +115,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Indigo"
-                    android:checked="true"
                     app:chipBackgroundColor="#303F9F" />
 
                 <com.google.android.material.chip.Chip
@@ -125,7 +123,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Blue"
-                    android:checked="true"
                     app:chipBackgroundColor="#1976D2" />
 
                 <com.google.android.material.chip.Chip
@@ -134,7 +131,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cyan"
-                    android:checked="true"
                     app:chipBackgroundColor="#0097A7" />
 
                 <com.google.android.material.chip.Chip
@@ -143,7 +139,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Teal"
-                    android:checked="true"
                     app:chipBackgroundColor="#00796B" />
 
                 <com.google.android.material.chip.Chip
@@ -152,7 +147,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Green"
-                    android:checked="true"
                     app:chipBackgroundColor="#388E3C" />
 
                 <com.google.android.material.chip.Chip
@@ -161,7 +155,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Amber"
-                    android:checked="true"
                     app:chipBackgroundColor="#FFA000" />
 
                 <com.google.android.material.chip.Chip
@@ -170,7 +163,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Orange"
-                    android:checked="true"
                     app:chipBackgroundColor="#E64A19" />
 
                 <com.google.android.material.chip.Chip
@@ -179,7 +171,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Brown"
-                    android:checked="true"
                     app:chipBackgroundColor="#5D4037" />
 
                 <com.google.android.material.chip.Chip
