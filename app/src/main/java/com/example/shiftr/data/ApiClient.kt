@@ -2,12 +2,11 @@ package com.example.shiftr.data
 
 import android.content.Context
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 object ApiClient {
 
@@ -62,6 +61,10 @@ object ApiClient {
         suspend fun addTodo(
             @Body body: TodoBody
         ): Todo
-    }
 
+        @DELETE("todo/{id}")
+        suspend fun deleteTodo(
+            @Path("id") id: Int
+        )
+    }
 }

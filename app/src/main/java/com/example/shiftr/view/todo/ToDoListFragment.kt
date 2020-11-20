@@ -55,10 +55,10 @@ class ToDoListFragment : Fragment() {
         }
 
         with(viewModel) {
-            isDataLoading.observe(viewLifecycleOwner, isDataLoadingObserver)
-            isEmptyList.observe(viewLifecycleOwner, isEmptyListObserver)
             todos.observe(viewLifecycleOwner, todoObserver)
+            isEmptyList.observe(viewLifecycleOwner, isEmptyListObserver)
             onMessageError.observe(viewLifecycleOwner, onErrorObserver)
+            isDataLoading.observe(viewLifecycleOwner, isDataLoadingObserver)
         }
     }
 
@@ -66,7 +66,9 @@ class ToDoListFragment : Fragment() {
         with(binding) {
             if (isLoading) {
                 todoProgress.visibility = View.VISIBLE
-                todoRecycler.visibility = View.INVISIBLE
+                todoRecycler.visibility = View.GONE
+                noTodoImage.visibility = View.GONE
+                noTodoText.visibility = View.GONE
             } else {
                 todoProgress.visibility = View.GONE
             }

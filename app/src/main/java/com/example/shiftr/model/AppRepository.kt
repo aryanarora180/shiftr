@@ -66,8 +66,19 @@ class AppRepository(context: Context) : AppDataSource {
             apiClient.addTodo(TodoBody(name, description, color))
         OperationResult.Success(result)
     } catch (e: HttpException) {
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
+    override suspend fun deleteTodo(id: Int): OperationResult<Unit> = try {
+        apiClient.deleteTodo(id)
+        OperationResult.Success(Unit)
+    } catch (e: HttpException) {
         e.printStackTrace()
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: KotlinNullPointerException) {
+        OperationResult.Success(Unit)
     } catch (e: Exception) {
         e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))

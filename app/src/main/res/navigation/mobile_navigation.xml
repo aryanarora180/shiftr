@@ -40,5 +40,10 @@
         <argument
             android:name="todo"
             app:argType="com.example.shiftr.data.Todo" />
+        <action
+            android:id="@+id/action_viewTodoFragment_to_toDoListFragment"
+            app:destination="@id/toDoListFragment"
+            app:popUpTo="@id/toDoListFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

@@ -26,4 +26,8 @@ interface AppDataSource {
         description: String,
         color: String,
     ): OperationResult<Todo>
+
+    suspend fun deleteTodo(
+        id: Int,
+    ): OperationResult<Unit>
 }

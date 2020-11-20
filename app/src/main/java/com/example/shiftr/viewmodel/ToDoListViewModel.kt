@@ -34,7 +34,7 @@ class ToDoListViewModel @ViewModelInject constructor(
     val todos: LiveData<List<Todo>>
         get() = _todos
 
-    private fun loadTodos() {
+    fun loadTodos() {
         viewModelScope.launch(Dispatchers.IO) {
             _isDataLoading.postValue(true)
             when (val result = repository.getTodo()) {
