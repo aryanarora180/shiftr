@@ -54,15 +54,19 @@ class ViewTodoFragment : Fragment() {
             descriptionText.text = args.todo.description
 
             addTodoItemFab.setOnClickListener {
-                AddTodoItemFragment(viewModel).show(childFragmentManager, "add-todo-item")
+                AddTodoItemBottomSheetFragment(viewModel).show(childFragmentManager, "add-todo-item")
             }
 
             deleteImage.setOnClickListener { showDeleteConfirmation() }
         }
 
-        todoItemsAdapter.listener = { todoItem ->
-            // TODO
+        todoItemsAdapter.deleteListener = { todoItem ->
+            showDeleteItemConfirmation(todoItem)
         }
+        todoItemsAdapter.actionListener = {
+            // TODO: Toggle done state
+        }
+
         binding.todoItemsRecycler.apply {
             edgeEffectFactory =
                 SpringyRecycler.springEdgeEffectFactory<TodoItemAdapter.TodoItemViewHolder>()
@@ -149,6 +153,18 @@ class ViewTodoFragment : Fragment() {
             setMessage("Are you sure you want to delete this task?")
             setPositiveButton("Yes") { _, _ ->
                 viewModel.deleteTodo()
+            }
+            setNeutralButton("Cancel") { _, _ -> /* Do nothing */ }
+            show()
+        }
+    }
+
+    private fun showDeleteItemConfirmation(todoItem: TodoItem) {
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle("Delete todo")
+            setMessage("Are you sure you want to delete todo \"${todoItem.itemText}\"?")
+            setPositiveButton("Yes") { _, _ ->
+
             }
             setNeutralButton("Cancel") { _, _ -> /* Do nothing */ }
             show()

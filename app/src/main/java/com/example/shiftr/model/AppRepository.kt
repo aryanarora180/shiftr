@@ -86,13 +86,7 @@ class AppRepository(context: Context) : AppDataSource {
 
     override suspend fun getTodoItems(todoId: Int): OperationResult<List<TodoItem>> = try {
         val result = apiClient.getTodoItems()
-
-        val correspondingItems = mutableListOf<TodoItem>()
-        result.forEach {
-            if (it.todoId == todoId)
-                correspondingItems.add(it)
-        }
-        OperationResult.Success(correspondingItems.sortedByDescending { it.getPriorityAsInt() })
+        OperationResult.Success(result.filter { it.todoId == todoId }.sortedByDescending { it.getPriorityAsInt() })
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
@@ -104,7 +98,7 @@ class AppRepository(context: Context) : AppDataSource {
         todoId: Int,
         done: Boolean,
         priority: String,
-        deadline: String
+        deadline: String,
     ): OperationResult<TodoItem> = try {
         val result = apiClient.addTodoItem(TodoItemBody(itemText, todoId, done, priority, deadline))
         OperationResult.Success(result)

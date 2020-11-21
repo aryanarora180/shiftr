@@ -1,6 +1,7 @@
 package com.example.shiftr.viewmodel
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -11,6 +12,11 @@ import com.example.shiftr.data.TodoItem
 import com.example.shiftr.model.AppDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @SuppressLint("NullSafeMutableLiveData")
 class ViewTodoViewModel @ViewModelInject constructor(
@@ -101,6 +107,88 @@ class ViewTodoViewModel @ViewModelInject constructor(
                     }
                 }
                 _isDeletingTodo.postValue(false)
+            } else {
+                _onDeleteTodoErrorMessage.postValue(
+                    SingleLiveEvent(
+                        "Something went wrong. Please try again later"
+                    )
+                )
+            }
+        }
+    }
+
+    private val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH)
+    fun formatDate(dateEpoch: Long): String {
+        val parsedDate =
+            Instant.ofEpochMilli(dateEpoch).atZone(ZoneId.systemDefault()).toLocalDate()
+        return parsedDate.format(dateFormatter)
+    }
+
+    private val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH)
+    fun formatTime(hours: Int, minutes: Int): String {
+        val parsedTime = DateTimeFormatter.ISO_TIME.parse(getTimeText(hours, minutes))
+        return timeFormatter.format(parsedTime)
+    }
+
+    private fun getTimeText(hours: Int, minutes: Int): String {
+        var time = ""
+        time += if (hours in 0..9) "0$hours" else hours
+        time += if (minutes in 0..9) ":0$minutes" else ":$minutes"
+        return time
+    }
+
+    private fun formatDateForApi(dateAndTime: String): String {
+        val parsedTime =
+            LocalDateTime.parse(dateAndTime, DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a"))
+                .atZone(
+                    ZoneId.systemDefault()
+                )
+        return DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneId.systemDefault())
+            .format(parsedTime)
+    }
+
+    private val _isAddingTodoItem = MutableLiveData<SingleLiveEvent<Boolean>>()
+    val isAddingTodoItem: LiveData<SingleLiveEvent<Boolean>>
+        get() = _isAddingTodoItem
+
+    private val _onAddTodoItemErrorMessage = MutableLiveData<SingleLiveEvent<String>>()
+    val onAddTodoItemErrorMessage: LiveData<SingleLiveEvent<String>>
+        get() = _onAddTodoItemErrorMessage
+
+    private val _onAddTodoItemSuccess = MutableLiveData<SingleLiveEvent<Boolean>>()
+    val onAddTodoItemSuccess: LiveData<SingleLiveEvent<Boolean>>
+        get() = _onAddTodoItemSuccess
+
+    fun addTodoItem(
+        itemText: String,
+        priority: String,
+        deadlineDate: String,
+        deadlineTime: String,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = savedStateHandle.get<Todo>("todo")?.id
+            if (id != null) {
+                _isAddingTodoItem.postValue(SingleLiveEvent(true))
+                when (val result = repository.addTodoItem(
+                    itemText,
+                    id,
+                    false,
+                    priority,
+                    formatDateForApi("$deadlineDate $deadlineTime")
+                )) {
+                    is OperationResult.Success -> {
+                        loadTodoItems()
+                        _onAddTodoItemSuccess.postValue(SingleLiveEvent(true))
+                    }
+                    is OperationResult.Error -> {
+                        _onAddTodoItemErrorMessage.postValue(
+                            SingleLiveEvent(
+                                result.message
+                            )
+                        )
+                    }
+                }
+                _isAddingTodoItem.postValue(SingleLiveEvent(false))
             } else {
                 _onDeleteTodoErrorMessage.postValue(
                     SingleLiveEvent(

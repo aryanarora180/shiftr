@@ -2,6 +2,7 @@ package com.example.shiftr.view.adapter
 
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,12 +10,13 @@ import com.example.shiftr.R
 import com.example.shiftr.data.TodoItem
 import com.example.shiftr.databinding.ListItemTodoItemBinding
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 class TodoItemAdapter : RecyclerView.Adapter<TodoItemAdapter.TodoItemViewHolder>() {
 
-    lateinit var listener: (TodoItem) -> Unit
+    lateinit var deleteListener: (TodoItem) -> Unit
     lateinit var actionListener: (TodoItem) -> Unit
 
     var data = listOf<TodoItem>()
@@ -40,31 +42,38 @@ class TodoItemAdapter : RecyclerView.Adapter<TodoItemAdapter.TodoItemViewHolder>
 
         with(holder.binding) {
             todoItemCard.setCardBackgroundColor(Color.parseColor(todo.getPriorityColor()))
-            todoItemCard.setOnClickListener { listener(todo) }
+            todoItemCard.setOnLongClickListener {
+                deleteListener(todo)
+                true
+            }
             todoText.text = todo.itemText
             deadlineText.text = formatDate(todo.deadline)
             priorityText.text = todo.getPriorityText()
 
+            Log.e(javaClass.simpleName, "Todo done: ${todo.done}")
             if (todo.done) {
-                statusImage.setImageResource(R.drawable.outline_done_24)
-
-                todoText.paintFlags = todoText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                deadlineText.paintFlags = deadlineText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                priorityText.paintFlags = priorityText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-            } else {
                 statusImage.setImageResource(R.drawable.outline_clear_24)
 
                 todoText.paintFlags = todoText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 deadlineText.paintFlags = deadlineText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 priorityText.paintFlags = priorityText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
+                statusImage.setImageResource(R.drawable.outline_done_24)
+
+                todoText.paintFlags = todoText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                deadlineText.paintFlags = deadlineText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                priorityText.paintFlags = priorityText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
+
+            statusImage.setOnClickListener { actionListener(todo) }
         }
     }
 
-    private val formatter = DateTimeFormatter.ofPattern("yyyy MM dd", Locale.ENGLISH)
+    private val dateFormatter = DateTimeFormatter.ofPattern("E, MMM dd", Locale.ENGLISH)
+    private val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH)
     private fun formatDate(date: String): String {
-        val parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-        return parsedDate.format(formatter)
+        val parsedDate = LocalDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        return "Due ${parsedDate.format(dateFormatter)} at ${parsedDate.format(timeFormatter)}"
     }
 
     inner class TodoItemViewHolder(val binding: ListItemTodoItemBinding) :
