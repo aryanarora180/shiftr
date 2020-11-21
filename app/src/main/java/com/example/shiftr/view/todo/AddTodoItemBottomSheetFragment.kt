@@ -65,12 +65,14 @@ class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
                     dateLayout.isEnabled = false
                     timeLayout.isEnabled = false
                     applyButton.isEnabled = false
+                    applyButton.text = ""
                     applyProgress.visibility = View.VISIBLE
                 } else {
                     todoLayout.isEnabled = true
                     dateLayout.isEnabled = true
                     timeLayout.isEnabled = true
                     applyButton.isEnabled = true
+                    applyButton.text = getString(R.string.add)
                     applyProgress.visibility = View.GONE
                 }
             }

@@ -55,12 +55,14 @@ class AddTodoBottomSheetFragment : BottomSheetDialogFragment() {
                     descriptionLayout.isEnabled = false
                     colorChipGroup.isEnabled = false
                     applyButton.isEnabled = false
+                    applyButton.text = ""
                     applyProgress.visibility = View.VISIBLE
                 } else {
                     titleLayout.isEnabled = true
                     descriptionLayout.isEnabled = true
                     colorChipGroup.isEnabled = true
                     applyButton.isEnabled = true
+                    applyButton.text = getString(R.string.add)
                     applyProgress.visibility = View.GONE
                 }
             }

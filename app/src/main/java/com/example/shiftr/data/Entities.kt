@@ -4,6 +4,12 @@ import android.os.Parcelable
 import com.example.shiftr.data.TodoItem.Companion.PRIORITY_LOW
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
+import okhttp3.internal.Util.UTC
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZoneOffset.UTC
+import java.time.format.DateTimeFormatter
 
 data class GetResponse<T>(
     @field:Json(name = "data") val data: T,
@@ -86,10 +92,10 @@ data class TodoItem(
     }
 
     fun getPriorityAsInt() = when (priority) {
-        PRIORITY_LOW -> 0
+        PRIORITY_LOW -> 2
         PRIORITY_IMPORTANT -> 1
-        PRIORITY_URGENT -> 2
-        else -> 0
+        PRIORITY_URGENT -> 0
+        else -> 2
     }
 
     fun getPriorityColor()  = when (priority) {
@@ -105,6 +111,8 @@ data class TodoItem(
         PRIORITY_URGENT -> "Urgent"
         else -> "Low"
     }
+
+    fun getEpochTime() = LocalDateTime.parse(deadline, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toEpochSecond(ZoneOffset.UTC)
 }
 
 data class TodoItemUpdateDoneBody(

@@ -63,7 +63,13 @@ class AppRepository(context: Context) : AppDataSource {
         color: String
     ): OperationResult<Todo> = try {
         val result =
-            apiClient.addTodo(TodoBody(name, description, color))
+            apiClient.addTodo(
+                TodoBody(
+                    name,
+                    if (description.isEmpty()) "-" else description,
+                    color
+                )
+            )
         OperationResult.Success(result)
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
@@ -86,7 +92,8 @@ class AppRepository(context: Context) : AppDataSource {
 
     override suspend fun getTodoItems(todoId: Int): OperationResult<List<TodoItem>> = try {
         val result = apiClient.getTodoItems()
-        OperationResult.Success(result.filter { it.todoId == todoId }.sortedByDescending { it.getPriorityAsInt() }.sortedBy { it.done })
+        OperationResult.Success(result.filter { it.todoId == todoId }
+                .sortedWith(compareBy({ it.getEpochTime() }, { it.getPriorityAsInt() })))
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
