@@ -116,7 +116,20 @@ class ViewTodoFragment : Fragment() {
     private val todoItemsObserver = Observer<List<TodoItem>> { items ->
         with(binding) {
             todoItemsRecycler.visibility = View.VISIBLE
-            todoItemsAdapter.data = items
+
+            if (typeChipGroup.checkedChipId == R.id.chip_done) {
+                todoItemsAdapter.data = items.filter { it.done }
+            } else {
+                todoItemsAdapter.data = items.filter { !it.done }
+            }
+
+            typeChipGroup.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == R.id.chip_done) {
+                    todoItemsAdapter.data = items.filter { it.done }
+                } else {
+                    todoItemsAdapter.data = items.filter { !it.done }
+                }
+            }
         }
     }
 
