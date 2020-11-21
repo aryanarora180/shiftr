@@ -74,5 +74,16 @@ object ApiClient {
         suspend fun addTodoItem(
             @Body body: TodoItemBody
         ): TodoItem
+
+        @PATCH("todo/todo-items/{id}")
+        suspend fun setTodoItemDone(
+            @Path("id") todoItemId: Int,
+            @Body body: TodoItemUpdateDoneBody,
+        )
+
+        @DELETE("todo/todo-items/{id}")
+        suspend fun deleteTodoItem(
+            @Path("id") id: Int
+        )
     }
 }

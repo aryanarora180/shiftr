@@ -1,7 +1,6 @@
 package com.example.shiftr.viewmodel
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -64,11 +63,59 @@ class ViewTodoViewModel @ViewModelInject constructor(
                 }
                 _isDataLoading.postValue(false)
             } else {
-                _onDeleteTodoErrorMessage.postValue(
+                _onErrorMessage.postValue(
                     SingleLiveEvent(
                         "Something went wrong. Please try again later"
                     )
                 )
+            }
+        }
+    }
+
+    fun toggleTodoDone(todoItem: TodoItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = savedStateHandle.get<Todo>("todo")?.id
+            if (id != null) {
+                _isDataLoading.postValue(true)
+                when (val result =
+                    repository.updateTodoItemDone(todoItem.itemId, id, !todoItem.done)) {
+                    is OperationResult.Success -> {
+                        loadTodoItems()
+                    }
+                    is OperationResult.Error -> {
+                        _onErrorMessage.postValue(
+                            SingleLiveEvent(
+                                result.message
+                            )
+                        )
+                        _isDataLoading.postValue(false)
+                    }
+                }
+            } else {
+                _onErrorMessage.postValue(
+                    SingleLiveEvent(
+                        "Something went wrong. Please try again later"
+                    )
+                )
+            }
+        }
+    }
+
+    fun deleteTodoItem(todoItem: TodoItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isDataLoading.postValue(true)
+            when (val result = repository.deleteTodoItem(todoItem.itemId)) {
+                is OperationResult.Success -> {
+                    loadTodoItems()
+                }
+                is OperationResult.Error -> {
+                    _onErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                    _isDataLoading.postValue(false)
+                }
             }
         }
     }

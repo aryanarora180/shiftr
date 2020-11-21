@@ -86,7 +86,7 @@ class AppRepository(context: Context) : AppDataSource {
 
     override suspend fun getTodoItems(todoId: Int): OperationResult<List<TodoItem>> = try {
         val result = apiClient.getTodoItems()
-        OperationResult.Success(result.filter { it.todoId == todoId }.sortedByDescending { it.getPriorityAsInt() })
+        OperationResult.Success(result.filter { it.todoId == todoId }.sortedByDescending { it.getPriorityAsInt() }.sortedBy { it.done })
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
@@ -105,6 +105,36 @@ class AppRepository(context: Context) : AppDataSource {
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
+    override suspend fun updateTodoItemDone(
+        todoItemId: Int,
+        todoListId: Int,
+        done: Boolean
+    ): OperationResult<Unit> = try {
+        apiClient.setTodoItemDone(todoItemId, TodoItemUpdateDoneBody(todoListId, done))
+        OperationResult.Success(Unit)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: KotlinNullPointerException) {
+        OperationResult.Success(Unit)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
+    override suspend fun deleteTodoItem(id: Int): OperationResult<Unit> = try {
+        apiClient.deleteTodoItem(id)
+        OperationResult.Success(Unit)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: KotlinNullPointerException) {
+        OperationResult.Success(Unit)
+    } catch (e: Exception) {
+        e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 

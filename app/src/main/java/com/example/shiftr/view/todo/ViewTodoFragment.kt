@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -53,6 +54,7 @@ class ViewTodoFragment : Fragment() {
             nameText.text = args.todo.title
             descriptionText.text = args.todo.description
 
+            addTodoItemFab.backgroundTintList = ColorStateList.valueOf(color)
             addTodoItemFab.setOnClickListener {
                 AddTodoItemBottomSheetFragment(viewModel).show(childFragmentManager, "add-todo-item")
             }
@@ -63,8 +65,8 @@ class ViewTodoFragment : Fragment() {
         todoItemsAdapter.deleteListener = { todoItem ->
             showDeleteItemConfirmation(todoItem)
         }
-        todoItemsAdapter.actionListener = {
-            // TODO: Toggle done state
+        todoItemsAdapter.actionListener = { todoItem ->
+            viewModel.toggleTodoDone(todoItem)
         }
 
         binding.todoItemsRecycler.apply {
@@ -164,7 +166,7 @@ class ViewTodoFragment : Fragment() {
             setTitle("Delete todo")
             setMessage("Are you sure you want to delete todo \"${todoItem.itemText}\"?")
             setPositiveButton("Yes") { _, _ ->
-
+                viewModel.deleteTodoItem(todoItem)
             }
             setNeutralButton("Cancel") { _, _ -> /* Do nothing */ }
             show()

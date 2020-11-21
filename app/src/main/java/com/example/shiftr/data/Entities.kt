@@ -106,3 +106,8 @@ data class TodoItem(
         else -> "Low"
     }
 }
+
+data class TodoItemUpdateDoneBody(
+    @field:Json(name = "todo_list") val todoId: Int = 0,
+    @field:Json(name = "done") val done: Boolean = false,
+)

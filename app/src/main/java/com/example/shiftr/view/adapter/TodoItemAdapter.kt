@@ -41,7 +41,6 @@ class TodoItemAdapter : RecyclerView.Adapter<TodoItemAdapter.TodoItemViewHolder>
         val todo = data[position]
 
         with(holder.binding) {
-            todoItemCard.setCardBackgroundColor(Color.parseColor(todo.getPriorityColor()))
             todoItemCard.setOnLongClickListener {
                 deleteListener(todo)
                 true
@@ -49,8 +48,8 @@ class TodoItemAdapter : RecyclerView.Adapter<TodoItemAdapter.TodoItemViewHolder>
             todoText.text = todo.itemText
             deadlineText.text = formatDate(todo.deadline)
             priorityText.text = todo.getPriorityText()
+            priorityText.setTextColor(Color.parseColor(todo.getPriorityColor()))
 
-            Log.e(javaClass.simpleName, "Todo done: ${todo.done}")
             if (todo.done) {
                 statusImage.setImageResource(R.drawable.outline_clear_24)
 
