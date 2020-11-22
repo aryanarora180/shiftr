@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">shiftr</string>
     <string name="to_do_list">To Do List</string>
-    <string name="grocery_list">Grocery List</string>
+    <string name="inventory">Inventory</string>
     <string name="books">Books</string>
     <string name="image_uploads">Image uploads</string>
     <string name="medical_reports">Medical reports</string>
@@ -35,4 +35,5 @@
     <string name="time">Time</string>
     <string name="add_a_todo_item">Add a todo item</string>
     <string name="add_a_task">Add a task</string>
+    <string name="you_have_no_items_in_your_inventory">You have no items in your inventory</string>
 </resources>

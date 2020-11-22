@@ -11,9 +11,9 @@
         tools:layout="@layout/books_fragment" />
     <fragment
         android:id="@+id/groceryListFragment"
-        android:name="com.example.shiftr.view.GroceryListFragment"
-        android:label="@string/grocery_list"
-        tools:layout="@layout/grocery_list_fragment" />
+        android:name="com.example.shiftr.view.InventoryFragment"
+        android:label="@string/inventory"
+        tools:layout="@layout/inventory_fragment" />
     <fragment
         android:id="@+id/imageUploadsFragment"
         android:name="com.example.shiftr.view.ImageUploadsFragment"

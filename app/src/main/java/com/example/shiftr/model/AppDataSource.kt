@@ -50,4 +50,6 @@ interface AppDataSource {
     suspend fun deleteTodoItem(
         id: Int,
     ): OperationResult<Unit>
+
+    suspend fun getInventory(): OperationResult<List<InventoryItem>>
 }

@@ -85,5 +85,8 @@ object ApiClient {
         suspend fun deleteTodoItem(
             @Path("id") id: Int
         )
+
+        @GET("inventory/")
+        suspend fun getInventory( ): GetResponse<List<InventoryItem>>
     }
 }

@@ -147,6 +147,16 @@ class AppRepository(context: Context) : AppDataSource {
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
+    override suspend fun getInventory(): OperationResult<List<InventoryItem>> = try {
+        val result = apiClient.getInventory()
+        OperationResult.Success(result.data.sortedWith(
+            compareBy ({it.category}, {it.name})))
+    } catch (e: HttpException) {
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
     private fun getParsedErrorBody(status: Int, errorBody: String?): OperationResult.Error {
         return if (errorBody != null) {
             try {

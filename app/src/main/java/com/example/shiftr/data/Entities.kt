@@ -119,3 +119,18 @@ data class TodoItemUpdateDoneBody(
     @field:Json(name = "todo_list") val todoId: Int = 0,
     @field:Json(name = "done") val done: Boolean = false,
 )
+
+data class InventoryItem(
+    @field:Json(name = "name") val name: String = "",
+    @field:Json(name = "category") val category: String = "",
+    @field:Json(name = "quantity") val quantity: Float = 0.0F,
+    @field:Json(name = "unit") val unit: String = UNIT_NIL,
+) {
+    companion object {
+        const val UNIT_NIL = "nil"
+        const val UNIT_GRAMS = "gm"
+        const val UNIT_KG = "kg"
+        const val UNIT_ML = "ml"
+        const val UNIT_L = "l"
+    }
+}

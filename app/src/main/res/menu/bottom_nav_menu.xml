@@ -8,8 +8,8 @@
 
     <item
         android:id="@+id/groceryListFragment"
-        android:icon="@drawable/outline_local_grocery_store_24"
-        android:title="@string/grocery_list"/>
+        android:icon="@drawable/outline_backpack_24"
+        android:title="@string/inventory"/>
 
     <item
         android:id="@+id/booksFragment"
