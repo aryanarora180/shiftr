@@ -50,10 +50,12 @@ class AppRepository(context: Context) : AppDataSource {
 
     override suspend fun getTodo(): OperationResult<List<Todo>> = try {
         val result = apiClient.getTodo()
-        OperationResult.Success(result)
+        OperationResult.Success(result.data)
     } catch (e: HttpException) {
+        e.printStackTrace()
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
+        e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
@@ -92,7 +94,7 @@ class AppRepository(context: Context) : AppDataSource {
 
     override suspend fun getTodoItems(todoId: Int): OperationResult<List<TodoItem>> = try {
         val result = apiClient.getTodoItems()
-        OperationResult.Success(result.filter { it.todoId == todoId }
+        OperationResult.Success(result.data.filter { it.todoId == todoId }
                 .sortedWith(compareBy({ it.getEpochTime() }, { it.getPriorityAsInt() })))
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())

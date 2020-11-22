@@ -55,7 +55,7 @@ object ApiClient {
         ): RefreshTokenResponse
 
         @GET("todo/")
-        suspend fun getTodo(): List<Todo>
+        suspend fun getTodo(): GetResponse<List<Todo>>
 
         @POST("todo/")
         suspend fun addTodo(
@@ -68,7 +68,7 @@ object ApiClient {
         )
 
         @GET("todo/todo-items/")
-        suspend fun getTodoItems(): List<TodoItem>
+        suspend fun getTodoItems(): GetResponse<List<TodoItem>>
 
         @POST("todo/todo-items/")
         suspend fun addTodoItem(
