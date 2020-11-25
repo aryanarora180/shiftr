@@ -1,6 +1,7 @@
 package com.example.shiftr.model
 
 import com.example.shiftr.data.*
+import com.squareup.moshi.Json
 
 interface AppDataSource {
 
@@ -52,4 +53,11 @@ interface AppDataSource {
     ): OperationResult<Unit>
 
     suspend fun getInventory(): OperationResult<List<InventoryItem>>
+
+    suspend fun addInventoryItem(
+        name: String,
+        category: String,
+        quantity: Float,
+        unit: String,
+    ): OperationResult<Unit>
 }

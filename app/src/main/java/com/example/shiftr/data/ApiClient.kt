@@ -87,6 +87,11 @@ object ApiClient {
         )
 
         @GET("inventory/")
-        suspend fun getInventory( ): GetResponse<List<InventoryItem>>
+        suspend fun getInventory(): GetResponse<List<InventoryItem>>
+
+        @POST("inventory/")
+        suspend fun addInventoryItem(
+            @Body body: InventoryItemBody
+        )
     }
 }

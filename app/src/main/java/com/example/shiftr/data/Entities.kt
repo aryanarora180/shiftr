@@ -1,14 +1,12 @@
 package com.example.shiftr.data
 
 import android.os.Parcelable
+import com.example.shiftr.data.InventoryItem.Companion.UNIT_NIL
 import com.example.shiftr.data.TodoItem.Companion.PRIORITY_LOW
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
-import okhttp3.internal.Util.UTC
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.ZoneOffset
-import java.time.ZoneOffset.UTC
 import java.time.format.DateTimeFormatter
 
 data class GetResponse<T>(
@@ -98,21 +96,22 @@ data class TodoItem(
         else -> 2
     }
 
-    fun getPriorityColor()  = when (priority) {
+    fun getPriorityColor() = when (priority) {
         PRIORITY_LOW -> "#FFA000"
         PRIORITY_IMPORTANT -> "#E64A19"
         PRIORITY_URGENT -> "#D32F2F"
         else -> "#FFA000"
     }
 
-    fun getPriorityText()  = when (priority) {
+    fun getPriorityText() = when (priority) {
         PRIORITY_LOW -> "Low"
         PRIORITY_IMPORTANT -> "Important"
         PRIORITY_URGENT -> "Urgent"
         else -> "Low"
     }
 
-    fun getEpochTime() = LocalDateTime.parse(deadline, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toEpochSecond(ZoneOffset.UTC)
+    fun getEpochTime() = LocalDateTime.parse(deadline, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        .toEpochSecond(ZoneOffset.UTC)
 }
 
 data class TodoItemUpdateDoneBody(
@@ -121,6 +120,7 @@ data class TodoItemUpdateDoneBody(
 )
 
 data class InventoryItem(
+    @field:Json(name = "id") val id: Int = 0,
     @field:Json(name = "name") val name: String = "",
     @field:Json(name = "category") val category: String = "",
     @field:Json(name = "quantity") val quantity: Float = 0.0F,
@@ -132,5 +132,28 @@ data class InventoryItem(
         const val UNIT_KG = "kg"
         const val UNIT_ML = "ml"
         const val UNIT_L = "l"
+
+        fun getUnitFromText(text: String) = when (text) {
+            "g" -> UNIT_GRAMS
+            "Kg" -> UNIT_KG
+            "mL" -> UNIT_ML
+            "L" -> UNIT_L
+            else -> UNIT_NIL
+        }
+    }
+
+    fun getUnitText() = when (unit) {
+        UNIT_GRAMS -> "g"
+        UNIT_KG -> "Kg"
+        UNIT_ML -> "mL"
+        UNIT_L -> "L"
+        else -> ""
     }
 }
+
+data class InventoryItemBody(
+    @field:Json(name = "name") val name: String = "",
+    @field:Json(name = "category") val category: String = "",
+    @field:Json(name = "quantity") val quantity: Float = 0.0F,
+    @field:Json(name = "unit") val unit: String = UNIT_NIL,
+)

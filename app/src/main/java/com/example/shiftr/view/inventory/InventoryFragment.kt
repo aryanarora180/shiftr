@@ -1,16 +1,19 @@
-package com.example.shiftr.view
+package com.example.shiftr.view.inventory
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.shiftr.data.InventoryItem
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.databinding.InventoryFragmentBinding
+import com.example.shiftr.view.SpringyRecycler
 import com.example.shiftr.view.adapter.InventoryAdapter
+import com.example.shiftr.view.showSnackbar
 import com.example.shiftr.view.todo.AddTodoBottomSheetFragment
 import com.example.shiftr.viewmodel.InventoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class InventoryFragment : Fragment() {
 
     private lateinit var binding: InventoryFragmentBinding
-    private val viewModel by viewModels<InventoryViewModel>()
+    private val viewModel by activityViewModels<InventoryViewModel>()
 
     private val inventoryAdapter = InventoryAdapter()
 
@@ -43,7 +46,7 @@ class InventoryFragment : Fragment() {
             adapter = inventoryAdapter
         }
         binding.addInventoryFab.setOnClickListener {
-            AddTodoBottomSheetFragment.newInstance().show(childFragmentManager, "add-inventory-item")
+            AddInventoryItemBottomSheetFragment.newInstance().show(childFragmentManager, "add-inventory-item")
         }
 
         with(viewModel) {

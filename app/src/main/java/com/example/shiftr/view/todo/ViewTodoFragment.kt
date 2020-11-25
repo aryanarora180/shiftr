@@ -39,7 +39,7 @@ class ViewTodoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = ViewTodoItemsFragmentBinding.inflate(inflater)
         return binding.root
     }

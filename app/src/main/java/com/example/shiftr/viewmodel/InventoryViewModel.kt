@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.shiftr.data.InventoryItem
 import com.example.shiftr.data.OperationResult
 import com.example.shiftr.data.SingleLiveEvent
-import com.example.shiftr.data.Todo
 import com.example.shiftr.model.AppDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,13 +63,18 @@ class InventoryViewModel @ViewModelInject constructor(
         get() = _isAddingInventory
 
     private val _onAddSuccess = MutableLiveData<SingleLiveEvent<Boolean>>()
-    val onAddTodoSuccess: LiveData<SingleLiveEvent<Boolean>>
+    val onAddSuccess: LiveData<SingleLiveEvent<Boolean>>
         get() = _onAddSuccess
 
-    fun addInventoryItem(name: String, description: String, color: String) {
+    fun addInventoryItem(
+        name: String,
+        category: String,
+        quantity: Float,
+        unit: String
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             _isAddingInventory.postValue(SingleLiveEvent(true))
-            when (val result = repository.addTodo(name, description, color)) {
+            when (val result = repository.addInventoryItem(name, category, quantity, unit)) {
                 is OperationResult.Success -> {
                     loadInventory()
                     _onAddSuccess.postValue(SingleLiveEvent(true))

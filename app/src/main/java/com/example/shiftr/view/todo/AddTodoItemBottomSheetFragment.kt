@@ -24,7 +24,7 @@ class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = AddTodoItemFragmentBinding.inflate(layoutInflater)
         return binding.root
     }
