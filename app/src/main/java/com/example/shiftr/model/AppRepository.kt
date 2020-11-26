@@ -1,6 +1,7 @@
 package com.example.shiftr.model
 
 import android.content.Context
+import android.util.Log
 import com.example.shiftr.data.*
 import org.json.JSONObject
 import retrofit2.HttpException
@@ -173,6 +174,33 @@ class AppRepository(context: Context) : AppDataSource {
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
+    override suspend fun updateInventoryItemQuantity(
+        inventoryId: Int,
+        newQuantity: Float
+    ): OperationResult<Unit> = try {
+        Log.e(javaClass.simpleName, "ID: $inventoryId NewQty: $newQuantity")
+        val result = apiClient.updateInventoryQuantity(inventoryId, InventoryItemQuantityUpdateBody(newQuantity))
+        OperationResult.Success(result)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        e.printStackTrace()
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
+    override suspend fun deleteInventoryItem(inventoryId: Int): OperationResult<Unit> = try {
+        apiClient.deleteInventoryItem(inventoryId)
+        OperationResult.Success(Unit)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: KotlinNullPointerException) {
+        OperationResult.Success(Unit)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
     private fun getParsedErrorBody(status: Int, errorBody: String?): OperationResult.Error {
         return if (errorBody != null) {
             try {

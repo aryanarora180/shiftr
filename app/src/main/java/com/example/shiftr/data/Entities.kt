@@ -157,3 +157,7 @@ data class InventoryItemBody(
     @field:Json(name = "quantity") val quantity: Float = 0.0F,
     @field:Json(name = "unit") val unit: String = UNIT_NIL,
 )
+
+data class InventoryItemQuantityUpdateBody(
+    @field:Json(name = "quantity") val quantity: Float = 0.0F,
+)

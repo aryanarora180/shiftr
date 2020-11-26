@@ -91,6 +91,52 @@ class InventoryViewModel @ViewModelInject constructor(
         }
     }
 
+    fun updateInventoryItemQuantity(inventoryItem: InventoryItem, toIncrease: Boolean) {
+        viewModelScope.launch {
+            _isDataLoading.postValue(true)
+            when (val result =
+                repository.updateInventoryItemQuantity(
+                    inventoryItem.id,
+                    if (toIncrease) (inventoryItem.quantity + 1)
+                    else (inventoryItem.quantity - 1)
+                )) {
+                is OperationResult.Success -> {
+                    loadInventory()
+                }
+                is OperationResult.Error -> {
+                    _onErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                    _isDataLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun deleteInventoryItem(inventoryItem: InventoryItem) {
+        viewModelScope.launch {
+            _isDataLoading.postValue(true)
+            when (val result =
+                repository.deleteInventoryItem(
+                    inventoryItem.id,
+                )) {
+                is OperationResult.Success -> {
+                    loadInventory()
+                }
+                is OperationResult.Error -> {
+                    _onErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                    _isDataLoading.postValue(false)
+                }
+            }
+        }
+    }
+
     init {
         loadInventory()
     }

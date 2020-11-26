@@ -10,12 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.shiftr.data.InventoryItem
 import com.example.shiftr.data.SingleLiveEvent
+import com.example.shiftr.data.TodoItem
 import com.example.shiftr.databinding.InventoryFragmentBinding
 import com.example.shiftr.view.SpringyRecycler
 import com.example.shiftr.view.adapter.InventoryAdapter
 import com.example.shiftr.view.showSnackbar
 import com.example.shiftr.view.todo.AddTodoBottomSheetFragment
 import com.example.shiftr.viewmodel.InventoryViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,9 +39,16 @@ class InventoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        inventoryAdapter.deleteListener = { itemToDelete ->
-            // TODO
+        inventoryAdapter.increaseQuantityListener = {
+            viewModel.updateInventoryItemQuantity(it, true)
         }
+        inventoryAdapter.decreaseQuantityListener = {
+            viewModel.updateInventoryItemQuantity(it, false)
+        }
+        inventoryAdapter.deleteListener = {
+            showDeleteItemConfirmation(it)
+        }
+
         binding.inventoryRecycler.apply {
             edgeEffectFactory =
                 SpringyRecycler.springEdgeEffectFactory<InventoryAdapter.InventoryViewHolder>()
@@ -92,5 +101,17 @@ class InventoryFragment : Fragment() {
 
     private val onErrorObserver = Observer<SingleLiveEvent<String>> { error ->
         requireView().showSnackbar(error)
+    }
+
+    private fun showDeleteItemConfirmation(inventoryItem: InventoryItem) {
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle("Delete inventory item")
+            setMessage("Are you sure you want to delete ${inventoryItem.name} from your inventory?")
+            setPositiveButton("Yes") { _, _ ->
+                viewModel.deleteInventoryItem(inventoryItem)
+            }
+            setNeutralButton("Cancel") { _, _ -> /* Do nothing */ }
+            show()
+        }
     }
 }

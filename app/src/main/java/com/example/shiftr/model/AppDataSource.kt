@@ -60,4 +60,13 @@ interface AppDataSource {
         quantity: Float,
         unit: String,
     ): OperationResult<Unit>
+
+    suspend fun updateInventoryItemQuantity(
+        inventoryId: Int,
+        newQuantity: Float,
+    ): OperationResult<Unit>
+
+    suspend fun deleteInventoryItem(
+        inventoryId: Int,
+    ): OperationResult<Unit>
 }

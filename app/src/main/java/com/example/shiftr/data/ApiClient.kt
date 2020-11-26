@@ -93,5 +93,16 @@ object ApiClient {
         suspend fun addInventoryItem(
             @Body body: InventoryItemBody
         )
+
+        @PATCH("inventory/{id}")
+        suspend fun updateInventoryQuantity(
+            @Path("id") id: Int,
+            @Body body: InventoryItemQuantityUpdateBody,
+        )
+
+        @DELETE("inventory/{id}")
+        suspend fun deleteInventoryItem(
+            @Path("id") id: Int,
+        )
     }
 }
