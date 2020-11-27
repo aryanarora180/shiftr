@@ -125,9 +125,16 @@ class ViewTodoViewModel @ViewModelInject constructor(
 
         val shareText = StringBuilder("This is my todo list for $title on shiftr:\n\n")
         _todoItems.value?.forEach {
-            shareText.append("${it.itemText} (${it.getPriorityText()}) - ${if (it.done) "Completed" else "Pending"}\n")
+            shareText.append("${it.itemText} (${it.getPriorityText()}) ${formatDate(it.deadline)} - ${if (it.done) "Completed" else "Pending"} \n")
         }
         return shareText.toString()
+    }
+
+    private val shareDateFormatter = DateTimeFormatter.ofPattern("E, MMM dd", Locale.ENGLISH)
+    private val shareTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH)
+    private fun formatDate(date: String): String {
+        val parsedDate = LocalDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        return "due ${parsedDate.format(shareDateFormatter)} at ${parsedDate.format(shareTimeFormatter)}"
     }
 
     init {
