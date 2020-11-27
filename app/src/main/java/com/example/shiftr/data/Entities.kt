@@ -29,7 +29,7 @@ data class GoogleLoginBody(
 )
 
 data class GoogleLoginResponse(
-    @field:Json(name = "token") val tokenData: EmailLoginResponse,
+    @field:Json(name = "tokens") val tokens: Tokens,
 )
 
 data class RefreshTokenBody(

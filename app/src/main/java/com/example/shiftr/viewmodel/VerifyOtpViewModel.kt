@@ -3,13 +3,15 @@ package com.example.shiftr.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.shiftr.data.OperationResult
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.model.AppDataSource
 import com.example.shiftr.model.DataStoreUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -32,7 +34,6 @@ class VerifyOtpViewModel @ViewModelInject constructor(
     val phoneNumberValidated: LiveData<SingleLiveEvent<Boolean>>
         get() = _phoneNumberValidated
 
-    // TODO: Use regex and better logic for phone number verification
     fun validateEnteredDetails(phone: String, profession: String?): Boolean {
         this.profession = profession ?: ""
         phoneNumber = if (phone.length == 10) phone else ""
@@ -57,9 +58,14 @@ class VerifyOtpViewModel @ViewModelInject constructor(
 
     fun signUpWithGoogle() {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = repository.loginUserWithGoogle(GoogleSignIn.getLastSignedInAccount(_application)?.idToken ?: "", phoneNumber, profession)) {
+            when (val result = repository.loginUserWithGoogle(
+                GoogleSignIn.getLastSignedInAccount(_application)?.idToken ?: "",
+                phoneNumber,
+                profession
+            )) {
                 is OperationResult.Success -> {
-                    with(result.data.tokenData.tokens) {
+                    Log.e(javaClass.simpleName, "Tokens: ${result.data.tokens}")
+                    with(result.data.tokens) {
                         dataStoreUtils.storeAccessToken(accessToken)
                         dataStoreUtils.storeRefreshToken(refreshToken)
                     }
