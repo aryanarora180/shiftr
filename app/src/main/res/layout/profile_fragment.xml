@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ImageUploadsFragment">
+    tools:context=".view.ProfileFragment">
 
     <TextView
+        android:id="@+id/label_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/image_uploads" />
+        android:textIsSelectable="true"
+        android:text="@string/profile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

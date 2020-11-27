@@ -15,7 +15,7 @@
         android:id="@+id/dashboard_constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/textView"
@@ -24,7 +24,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:text="@string/dashboard"
-            android:textSize="24sp"
+            android:fontFamily="@font/sf_black"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="aryan.arora180" />
@@ -61,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView4"
                     tools:text="Engineer" />
@@ -71,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/username"
-                    android:textSize="12sp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     app:layout_constraintStart_toStartOf="@+id/username_text"
                     app:layout_constraintTop_toBottomOf="@+id/username_text" />
 
@@ -80,8 +81,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="Profession "
-                    android:textSize="12sp"
+                    android:text="Profession"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/profession_text"
                     app:layout_constraintTop_toBottomOf="@+id/profession_text" />
@@ -113,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sf_black"
-                    android:textSize="72sp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
                     app:layout_constraintBottom_toTopOf="@+id/textView9"
                     app:layout_constraintEnd_toEndOf="@+id/textView9"
                     app:layout_constraintStart_toStartOf="@+id/textView9"
@@ -127,6 +128,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/completed_todos"
                     android:textColor="#6845CE"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -159,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sf_black"
-                    android:textSize="72sp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
                     app:layout_constraintBottom_toTopOf="@+id/textView11"
                     app:layout_constraintEnd_toEndOf="@+id/textView11"
                     app:layout_constraintStart_toStartOf="@+id/textView11"
@@ -173,6 +175,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/pending_todos"
                     android:textColor="#D7A72B"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -205,7 +208,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sf_black"
-                    android:textSize="72sp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
                     app:layout_constraintBottom_toTopOf="@+id/textView13"
                     app:layout_constraintEnd_toEndOf="@+id/textView13"
                     app:layout_constraintStart_toStartOf="@+id/textView13"
@@ -219,6 +222,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/inventory_items"
                     android:textColor="#CC4141"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"

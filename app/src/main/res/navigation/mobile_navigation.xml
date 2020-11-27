@@ -5,10 +5,10 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/dashboardFragment">
     <fragment
-        android:id="@+id/booksFragment"
-        android:name="com.example.shiftr.view.BooksFragment"
-        android:label="@string/books"
-        tools:layout="@layout/books_fragment" />
+        android:id="@+id/profileFragment"
+        android:name="com.example.shiftr.view.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/profile_fragment" />
     <fragment
             android:id="@+id/inventoryFragment"
         android:name="com.example.shiftr.view.inventory.InventoryFragment"

@@ -2,7 +2,6 @@
     <string name="app_name">shiftr</string>
     <string name="to_do_list">To Do List</string>
     <string name="inventory">Inventory</string>
-    <string name="books">Books</string>
     <string name="image_uploads">Image uploads</string>
     <string name="medical_reports">Medical reports</string>
     <string name="enter_phone_prompt">Enter your profession and phone number to continue</string>
@@ -43,4 +42,7 @@
     <string name="inventory_items">Inventory items</string>
     <string name="username">Username</string>
     <string name="search">Search</string>
+    <string name="profile">Profile</string>
+    <string name="sign_in">Sign in</string>
+    <string name="_6_digit_otp">6 digit OTP</string>
 </resources>

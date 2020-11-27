@@ -46,7 +46,7 @@ class SignInFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SignInFragmentBinding.inflate(inflater)
         return binding.root
     }
@@ -90,12 +90,14 @@ class SignInFragment : Fragment() {
     private val emailIsSigningInObserver = Observer<Boolean> {
         with(binding) {
             if (it) {
+                submitButton.isEnabled = false
                 submitButton.text = ""
                 signInProgress.visibility = View.VISIBLE
                 googleSignInButton.isEnabled = false
                 signUpText.isEnabled = false
             } else {
-                submitButton.text = getString(R.string.submit)
+                submitButton.isEnabled = true
+                submitButton.text = getString(R.string.sign_in)
                 signInProgress.visibility = View.GONE
                 googleSignInButton.isEnabled = true
                 signUpText.isEnabled = true
