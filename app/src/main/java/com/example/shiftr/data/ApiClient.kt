@@ -2,7 +2,6 @@ package com.example.shiftr.data
 
 import android.content.Context
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -87,6 +86,25 @@ object ApiClient {
         )
 
         @GET("inventory/")
-        suspend fun getInventory( ): GetResponse<List<InventoryItem>>
+        suspend fun getInventory(): GetResponse<List<InventoryItem>>
+
+        @POST("inventory/")
+        suspend fun addInventoryItem(
+            @Body body: InventoryItemBody
+        )
+
+        @PATCH("inventory/{id}")
+        suspend fun updateInventoryQuantity(
+            @Path("id") id: Int,
+            @Body body: InventoryItemQuantityUpdateBody,
+        )
+
+        @DELETE("inventory/{id}")
+        suspend fun deleteInventoryItem(
+            @Path("id") id: Int,
+        )
+
+        @GET("auth/dashboard/")
+        suspend fun getDashboard(): GetResponse<DashboardResponse>
     }
 }

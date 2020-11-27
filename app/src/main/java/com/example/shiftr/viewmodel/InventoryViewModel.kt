@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.shiftr.data.InventoryItem
 import com.example.shiftr.data.OperationResult
 import com.example.shiftr.data.SingleLiveEvent
-import com.example.shiftr.data.Todo
 import com.example.shiftr.model.AppDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,13 +63,18 @@ class InventoryViewModel @ViewModelInject constructor(
         get() = _isAddingInventory
 
     private val _onAddSuccess = MutableLiveData<SingleLiveEvent<Boolean>>()
-    val onAddTodoSuccess: LiveData<SingleLiveEvent<Boolean>>
+    val onAddSuccess: LiveData<SingleLiveEvent<Boolean>>
         get() = _onAddSuccess
 
-    fun addInventoryItem(name: String, description: String, color: String) {
+    fun addInventoryItem(
+        name: String,
+        category: String,
+        quantity: Float,
+        unit: String
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             _isAddingInventory.postValue(SingleLiveEvent(true))
-            when (val result = repository.addTodo(name, description, color)) {
+            when (val result = repository.addInventoryItem(name, category, quantity, unit)) {
                 is OperationResult.Success -> {
                     loadInventory()
                     _onAddSuccess.postValue(SingleLiveEvent(true))
@@ -84,6 +88,52 @@ class InventoryViewModel @ViewModelInject constructor(
                 }
             }
             _isAddingInventory.postValue(SingleLiveEvent(false))
+        }
+    }
+
+    fun updateInventoryItemQuantity(inventoryItem: InventoryItem, toIncrease: Boolean) {
+        viewModelScope.launch {
+            _isDataLoading.postValue(true)
+            when (val result =
+                repository.updateInventoryItemQuantity(
+                    inventoryItem.id,
+                    if (toIncrease) (inventoryItem.quantity + 1)
+                    else (inventoryItem.quantity - 1)
+                )) {
+                is OperationResult.Success -> {
+                    loadInventory()
+                }
+                is OperationResult.Error -> {
+                    _onErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                    _isDataLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun deleteInventoryItem(inventoryItem: InventoryItem) {
+        viewModelScope.launch {
+            _isDataLoading.postValue(true)
+            when (val result =
+                repository.deleteInventoryItem(
+                    inventoryItem.id,
+                )) {
+                is OperationResult.Success -> {
+                    loadInventory()
+                }
+                is OperationResult.Error -> {
+                    _onErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                    _isDataLoading.postValue(false)
+                }
+            }
         }
     }
 

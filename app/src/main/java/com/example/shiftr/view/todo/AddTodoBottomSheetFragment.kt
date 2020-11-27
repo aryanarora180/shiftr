@@ -22,7 +22,7 @@ class AddTodoBottomSheetFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = AddTodoFragmentBinding.inflate(layoutInflater)
         return binding.root
     }

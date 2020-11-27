@@ -11,7 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 fun View.showSnackbar(text: String) = Snackbar.make(
     this,
     text,
-    Snackbar.LENGTH_LONG
+    Snackbar.LENGTH_INDEFINITE
 ).show()
 
 fun View.showSnackbar(text: SingleLiveEvent<String>) {
@@ -19,7 +19,7 @@ fun View.showSnackbar(text: SingleLiveEvent<String>) {
         Snackbar.make(
             this,
             it,
-            Snackbar.LENGTH_LONG
+            Snackbar.LENGTH_INDEFINITE
         ).show()
     }
 }

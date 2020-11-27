@@ -3,22 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/toDoListFragment">
+    app:startDestination="@id/dashboardFragment">
     <fragment
         android:id="@+id/booksFragment"
         android:name="com.example.shiftr.view.BooksFragment"
         android:label="@string/books"
         tools:layout="@layout/books_fragment" />
     <fragment
-        android:id="@+id/groceryListFragment"
-        android:name="com.example.shiftr.view.InventoryFragment"
+            android:id="@+id/inventoryFragment"
+        android:name="com.example.shiftr.view.inventory.InventoryFragment"
         android:label="@string/inventory"
         tools:layout="@layout/inventory_fragment" />
-    <fragment
-        android:id="@+id/imageUploadsFragment"
-        android:name="com.example.shiftr.view.ImageUploadsFragment"
-        android:label="@string/image_uploads"
-        tools:layout="@layout/image_uploads_fragment" />
     <fragment
         android:id="@+id/toDoListFragment"
         android:name="com.example.shiftr.view.todo.ToDoListFragment"
@@ -28,11 +23,6 @@
             android:id="@+id/action_toDoListFragment_to_viewTodoFragment"
             app:destination="@id/viewTodoFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/medicalReportsFragment"
-        android:name="com.example.shiftr.view.MedicalReportsFragment"
-        android:label="@string/medical_reports"
-        tools:layout="@layout/medical_reports_fragment" />
     <fragment
         android:id="@+id/viewTodoFragment"
         android:name="com.example.shiftr.view.todo.ViewTodoFragment"
@@ -46,4 +36,9 @@
             app:popUpTo="@id/toDoListFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.shiftr.view.DashboardFragment"
+        android:label="DashboardFragment"
+        tools:layout="@layout/dashboard_fragment"/>
 </navigation>

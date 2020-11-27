@@ -120,6 +120,16 @@ class ViewTodoViewModel @ViewModelInject constructor(
         }
     }
 
+    fun getShareText(): String {
+        val title = savedStateHandle.get<Todo>("todo")?.title
+
+        val shareText = StringBuilder("This is my todo list for $title on shiftr:\n\n")
+        _todoItems.value?.forEach {
+            shareText.append("${it.itemText} (${it.getPriorityText()}) - ${if (it.done) "Completed" else "Pending"}\n")
+        }
+        return shareText.toString()
+    }
+
     init {
         loadTodoItems()
     }

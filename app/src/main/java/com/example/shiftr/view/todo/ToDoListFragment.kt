@@ -32,7 +32,7 @@ class ToDoListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = ToDoListFragmentBinding.inflate(inflater)
         return binding.root
     }
