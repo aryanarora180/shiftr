@@ -2,7 +2,6 @@ package com.example.shiftr.data
 
 import android.content.Context
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -105,7 +104,7 @@ object ApiClient {
             @Path("id") id: Int,
         )
 
-        @GET("dashboard/")
+        @GET("auth/dashboard/")
         suspend fun getDashboard(): GetResponse<DashboardResponse>
     }
 }

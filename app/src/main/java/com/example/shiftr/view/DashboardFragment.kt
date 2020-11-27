@@ -55,8 +55,8 @@ class DashboardFragment : Fragment() {
 
     private val dashboardObserver = Observer<DashboardResponse> {
         with(binding) {
+            dashboardConstraint.visibility = View.VISIBLE
             usernameText.text = it.username
-            numberText.text = it.phoneNumber
             professionText.text = it.profession
             completedTodosText.text = it.completedTdo.toString()
             inventoryItemsText.text = it.inventory.toString()

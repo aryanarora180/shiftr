@@ -1,12 +1,12 @@
 package com.example.shiftr.view.todo
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -24,6 +24,7 @@ import com.example.shiftr.viewmodel.ToDoListViewModel
 import com.example.shiftr.viewmodel.ViewTodoViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class ViewTodoFragment : Fragment() {
@@ -56,10 +57,21 @@ class ViewTodoFragment : Fragment() {
 
             addTodoItemFab.backgroundTintList = ColorStateList.valueOf(color)
             addTodoItemFab.setOnClickListener {
-                AddTodoItemBottomSheetFragment(viewModel).show(childFragmentManager, "add-todo-item")
+                AddTodoItemBottomSheetFragment(viewModel).show(
+                    childFragmentManager,
+                    "add-todo-item"
+                )
             }
 
             deleteImage.setOnClickListener { showDeleteConfirmation() }
+            shareImage.setOnClickListener {
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(Intent.EXTRA_TEXT, viewModel.getShareText())
+                sendIntent.type = "text/plain"
+                val shareIntent = Intent.createChooser(sendIntent, "Share todo list for ${args.todo}")
+                startActivity(shareIntent)
+            }
         }
 
         todoItemsAdapter.deleteListener = { todoItem ->

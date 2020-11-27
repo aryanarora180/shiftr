@@ -15,7 +15,7 @@
         android:id="@+id/dashboard_constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/textView"
@@ -50,21 +50,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="aryan.arora180" />
-
-                <TextView
-                    android:id="@+id/number_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4"
-                    tools:text="8007187941" />
 
                 <TextView
                     android:id="@+id/profession_text"
@@ -72,9 +61,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4"
                     tools:text="Engineer" />
 
                 <TextView
@@ -85,15 +74,6 @@
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@+id/username_text"
                     app:layout_constraintTop_toBottomOf="@+id/username_text" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/phone"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="@+id/number_text"
-                    app:layout_constraintTop_toBottomOf="@+id/number_text" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -136,6 +116,7 @@
                     android:textSize="72sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView9"
                     app:layout_constraintEnd_toEndOf="@+id/textView9"
+                    app:layout_constraintStart_toStartOf="@+id/textView9"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
                     tools:text="69" />
@@ -180,6 +161,7 @@
                     android:fontFamily="@font/sf_black"
                     android:textSize="72sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView11"
+                    app:layout_constraintEnd_toEndOf="@+id/textView11"
                     app:layout_constraintStart_toStartOf="@+id/textView11"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
@@ -224,6 +206,7 @@
                     android:fontFamily="@font/sf_black"
                     android:textSize="72sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView13"
+                    app:layout_constraintEnd_toEndOf="@+id/textView13"
                     app:layout_constraintStart_toStartOf="@+id/textView13"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
