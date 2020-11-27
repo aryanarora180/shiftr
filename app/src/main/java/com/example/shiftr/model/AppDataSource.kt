@@ -69,4 +69,6 @@ interface AppDataSource {
     suspend fun deleteInventoryItem(
         inventoryId: Int,
     ): OperationResult<Unit>
+
+    suspend fun getDashboard(): OperationResult<DashboardResponse>
 }

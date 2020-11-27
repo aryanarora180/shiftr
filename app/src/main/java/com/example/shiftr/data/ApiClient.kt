@@ -104,5 +104,8 @@ object ApiClient {
         suspend fun deleteInventoryItem(
             @Path("id") id: Int,
         )
+
+        @GET("dashboard/")
+        suspend fun getDashboard(): GetResponse<DashboardResponse>
     }
 }

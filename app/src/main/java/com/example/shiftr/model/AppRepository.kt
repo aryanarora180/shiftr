@@ -178,9 +178,19 @@ class AppRepository(context: Context) : AppDataSource {
         inventoryId: Int,
         newQuantity: Float
     ): OperationResult<Unit> = try {
-        Log.e(javaClass.simpleName, "ID: $inventoryId NewQty: $newQuantity")
         val result = apiClient.updateInventoryQuantity(inventoryId, InventoryItemQuantityUpdateBody(newQuantity))
         OperationResult.Success(result)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: Exception) {
+        e.printStackTrace()
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
+    override suspend fun getDashboard(): OperationResult<DashboardResponse> = try {
+        val result = apiClient.getDashboard()
+        OperationResult.Success(result.data)
     } catch (e: HttpException) {
         e.printStackTrace()
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())

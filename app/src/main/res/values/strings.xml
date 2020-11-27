@@ -13,13 +13,11 @@
     <string name="enter_valid_phone">Please enter a valid phone number to continue</string>
     <string name="priority">Priority</string>
     <string name="no_todo">You have no TODOs</string>
-    <string name="email">Email</string>
     <string name="submit">Submit</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="or_connect_with">or connect with</string>
     <string name="password">Password</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up.</string>
-    <string name="username">Username</string>
     <string name="confirm_password">Confirm password</string>
     <string name="profession">Profession</string>
     <string name="add_a_todo">Add a todo</string>
@@ -37,4 +35,11 @@
     <string name="add_a_task">Add a task</string>
     <string name="you_have_no_items_in_your_inventory">You have no items in your inventory</string>
     <string name="add_an_inventory_item">Add an inventory item</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="completed_todos">Completed todos</string>
+    <string name="pending_todos">Pending todos</string>
+    <string name="inventory_items">Inventory items</string>
+    <string name="username">Username</string>
 </resources>

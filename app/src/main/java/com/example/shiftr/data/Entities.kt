@@ -161,3 +161,12 @@ data class InventoryItemBody(
 data class InventoryItemQuantityUpdateBody(
     @field:Json(name = "quantity") val quantity: Float = 0.0F,
 )
+
+data class DashboardResponse(
+    @field:Json(name = "username") val username: String = "",
+    @field:Json(name = "phone") val phoneNumber: String = "",
+    @field:Json(name = "profession") val profession: String = "",
+    @field:Json(name = "completed_todo") val completedTdo: Int = 0,
+    @field:Json(name = "pending_todo") val pendingTodo: Int = 0,
+    @field:Json(name = "inventory") val inventory: Int = 0,
+)
