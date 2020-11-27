@@ -74,7 +74,7 @@ object ApiClient {
         @POST("todo/todo-items/")
         suspend fun addTodoItem(
             @Body body: TodoItemBody
-        ): TodoItem
+        ): GetResponse<TodoItem>
 
         @PATCH("todo/todo-items/{id}")
         suspend fun setTodoItemDone(
@@ -111,10 +111,10 @@ object ApiClient {
         suspend fun getDashboard(): GetResponse<DashboardResponse>
 
         @Multipart
-        @POST("documents/")
+        @POST("todo/documents/")
         suspend fun uploadDocumentForTodo(
-            @Part("id") todoId: RequestBody,
             @Part file: MultipartBody.Part,
+            @Part("todo_item") todoId: RequestBody,
         )
     }
 }

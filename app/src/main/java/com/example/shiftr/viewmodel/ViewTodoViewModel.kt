@@ -259,7 +259,7 @@ class ViewTodoViewModel @ViewModelInject constructor(
                     formatDateForApi("$deadlineDate $deadlineTime")
                 )) {
                     is OperationResult.Success -> {
-                        Log.e(javaClass.simpleName, "Todo added succesfully")
+                        Log.e(javaClass.simpleName, "Todo added succesfully. Result is ${result.data}")
                         if (selectedUri != null) {
                             Log.e(javaClass.simpleName, "Uploading attachment now")
                             uploadAttachmentForTodo(result.data.itemId)
@@ -352,7 +352,7 @@ class ViewTodoViewModel @ViewModelInject constructor(
 
         val file = File(fileLocation)
         val body = RequestBody.create(MediaType.parse(mimeType), file)
-        return MultipartBody.Part.createFormData("upload", file.name, body)
+        return MultipartBody.Part.createFormData("doc", file.name, body)
     }
 
     private fun uploadAttachmentForTodo(todoId: Int) {

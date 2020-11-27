@@ -99,7 +99,7 @@ class AppRepository(context: Context) : AppDataSource {
     override suspend fun getTodoItems(todoId: Int): OperationResult<List<TodoItem>> = try {
         val result = apiClient.getTodoItems()
         OperationResult.Success(result.data.filter { it.todoId == todoId }
-                .sortedWith(compareBy({ it.getEpochTime() }, { it.getPriorityAsInt() })))
+            .sortedWith(compareBy({ it.getEpochTime() }, { it.getPriorityAsInt() })))
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
@@ -114,7 +114,7 @@ class AppRepository(context: Context) : AppDataSource {
         deadline: String,
     ): OperationResult<TodoItem> = try {
         val result = apiClient.addTodoItem(TodoItemBody(itemText, todoId, done, priority, deadline))
-        OperationResult.Success(result)
+        OperationResult.Success(result.data)
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
@@ -153,8 +153,11 @@ class AppRepository(context: Context) : AppDataSource {
 
     override suspend fun getInventory(): OperationResult<List<InventoryItem>> = try {
         val result = apiClient.getInventory()
-        OperationResult.Success(result.data.sortedWith(
-            compareBy ({it.category}, {it.name})))
+        OperationResult.Success(
+            result.data.sortedWith(
+                compareBy({ it.category }, { it.name })
+            )
+        )
     } catch (e: HttpException) {
         getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
     } catch (e: Exception) {
@@ -167,7 +170,14 @@ class AppRepository(context: Context) : AppDataSource {
         quantity: Float,
         unit: String
     ): OperationResult<Unit> = try {
-        val result = apiClient.addInventoryItem(InventoryItemBody(name, category, quantity, InventoryItem.getUnitFromText(unit)))
+        val result = apiClient.addInventoryItem(
+            InventoryItemBody(
+                name,
+                category,
+                quantity,
+                InventoryItem.getUnitFromText(unit)
+            )
+        )
         OperationResult.Success(result)
     } catch (e: HttpException) {
         e.printStackTrace()
@@ -181,7 +191,10 @@ class AppRepository(context: Context) : AppDataSource {
         inventoryId: Int,
         newQuantity: Float
     ): OperationResult<Unit> = try {
-        val result = apiClient.updateInventoryQuantity(inventoryId, InventoryItemQuantityUpdateBody(newQuantity))
+        val result = apiClient.updateInventoryQuantity(
+            inventoryId,
+            InventoryItemQuantityUpdateBody(newQuantity)
+        )
         OperationResult.Success(result)
     } catch (e: HttpException) {
         e.printStackTrace()
@@ -216,7 +229,11 @@ class AppRepository(context: Context) : AppDataSource {
     }
 
     override suspend fun uploadDocumentForTodo(todoId: Int, file: MultipartBody.Part) = try {
-        apiClient.uploadDocumentForTodo(RequestBody.create(MediaType.parse("text/plain"), todoId.toString()), file)
+        Log.e(javaClass.simpleName, "Todo ID: $todoId")
+        apiClient.uploadDocumentForTodo(
+            file,
+            RequestBody.create(MediaType.parse("text/plain"), todoId.toString())
+        )
         OperationResult.Success(Unit)
     } catch (e: HttpException) {
         e.printStackTrace()
@@ -224,7 +241,6 @@ class AppRepository(context: Context) : AppDataSource {
     } catch (e: KotlinNullPointerException) {
         OperationResult.Success(Unit)
     } catch (e: Exception) {
-        e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
