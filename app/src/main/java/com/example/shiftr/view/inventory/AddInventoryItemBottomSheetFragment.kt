@@ -1,11 +1,13 @@
 package com.example.shiftr.view.inventory
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
@@ -14,10 +16,11 @@ import com.example.shiftr.view.showSnackbar
 import com.example.shiftr.viewmodel.InventoryViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class AddInventoryItemBottomSheetFragment : BottomSheetDialogFragment() {
+
+class AddInventoryItemBottomSheetFragment(private val viewModel: InventoryViewModel) :
+    BottomSheetDialogFragment() {
 
     private lateinit var binding: AddInventoryItemBinding
-    private val viewModel by activityViewModels<InventoryViewModel>()
 
     private val units = listOf("None", "g", "Kg", "mL", "L")
 
@@ -36,6 +39,9 @@ class AddInventoryItemBottomSheetFragment : BottomSheetDialogFragment() {
         with(binding) {
             val unitDropdownAdapter = ArrayAdapter(requireContext(), R.layout.text_menu_item, units)
             unitDropdown.setAdapter(unitDropdownAdapter)
+            unitDropdown.setOnClickListener {
+                hideKeyboard()
+            }
 
             addButton.setOnClickListener {
                 viewModel.addInventoryItem(
@@ -90,7 +96,8 @@ class AddInventoryItemBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    companion object {
-        fun newInstance() = AddInventoryItemBottomSheetFragment()
+    private fun hideKeyboard() {
+        val imm = requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 }

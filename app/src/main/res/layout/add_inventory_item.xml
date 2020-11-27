@@ -81,6 +81,7 @@
                 android:id="@+id/quantity_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="24dp"
-            android:hint="Quantity"
+            android:hint="Unit"
             app:endIconMode="dropdown_menu"
             app:layout_constraintBaseline_toBaselineOf="@id/quantity_layout"
             app:layout_constraintEnd_toEndOf="parent"

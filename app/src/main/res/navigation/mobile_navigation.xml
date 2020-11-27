@@ -10,7 +10,7 @@
         android:label="@string/books"
         tools:layout="@layout/books_fragment" />
     <fragment
-        android:id="@+id/groceryListFragment"
+            android:id="@+id/inventoryFragment"
         android:name="com.example.shiftr.view.inventory.InventoryFragment"
         android:label="@string/inventory"
         tools:layout="@layout/inventory_fragment" />

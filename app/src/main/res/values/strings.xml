@@ -42,4 +42,5 @@
     <string name="pending_todos">Pending todos</string>
     <string name="inventory_items">Inventory items</string>
     <string name="username">Username</string>
+    <string name="search">Search</string>
 </resources>

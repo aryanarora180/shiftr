@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.example.shiftr.R
 import com.example.shiftr.data.DashboardResponse
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.databinding.DashboardFragmentBinding
@@ -29,6 +31,12 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        with(binding) {
+            completedTodosCard.setOnClickListener { findNavController().navigate(R.id.toDoListFragment) }
+            pendingTodosCard.setOnClickListener { findNavController().navigate(R.id.toDoListFragment) }
+            inventoryItemsCard.setOnClickListener { findNavController().navigate(R.id.inventoryFragment) }
+        }
 
         with(viewModel) {
             isDataLoading.observe(viewLifecycleOwner, isDataLoadingObserver)

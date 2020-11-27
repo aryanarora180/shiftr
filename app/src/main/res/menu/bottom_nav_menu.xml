@@ -12,7 +12,7 @@
         android:title="@string/to_do_list"/>
 
     <item
-        android:id="@+id/groceryListFragment"
+        android:id="@+id/inventoryFragment"
         android:icon="@drawable/outline_backpack_24"
         android:title="@string/inventory"/>
 
