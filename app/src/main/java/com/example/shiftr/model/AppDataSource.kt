@@ -1,7 +1,7 @@
 package com.example.shiftr.model
 
 import com.example.shiftr.data.*
-import com.squareup.moshi.Json
+import okhttp3.MultipartBody
 
 interface AppDataSource {
 
@@ -71,4 +71,9 @@ interface AppDataSource {
     ): OperationResult<Unit>
 
     suspend fun getDashboard(): OperationResult<DashboardResponse>
+
+    suspend fun uploadDocumentForTodo(
+        todoId: Int,
+        file: MultipartBody.Part,
+    ): OperationResult<Unit>
 }

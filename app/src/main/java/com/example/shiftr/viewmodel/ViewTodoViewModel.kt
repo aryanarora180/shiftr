@@ -1,6 +1,11 @@
 package com.example.shiftr.viewmodel
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.net.Uri
+import android.provider.OpenableColumns
+import android.text.format.Formatter
+import android.util.Log
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -11,6 +16,11 @@ import com.example.shiftr.data.TodoItem
 import com.example.shiftr.model.AppDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -20,8 +30,11 @@ import java.util.*
 @SuppressLint("NullSafeMutableLiveData")
 class ViewTodoViewModel @ViewModelInject constructor(
     private val repository: AppDataSource,
-    @Assisted private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
+    @Assisted private val savedStateHandle: SavedStateHandle,
+    application: Application
+) : AndroidViewModel(application) {
+
+    private val _application = application
 
     private val _isDataLoading = MutableLiveData<Boolean>()
     val isDataLoading: LiveData<Boolean>
@@ -134,7 +147,11 @@ class ViewTodoViewModel @ViewModelInject constructor(
     private val shareTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH)
     private fun formatDate(date: String): String {
         val parsedDate = LocalDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-        return "due ${parsedDate.format(shareDateFormatter)} at ${parsedDate.format(shareTimeFormatter)}"
+        return "due ${parsedDate.format(shareDateFormatter)} at ${
+            parsedDate.format(
+                shareTimeFormatter
+            )
+        }"
     }
 
     init {
@@ -230,6 +247,7 @@ class ViewTodoViewModel @ViewModelInject constructor(
         deadlineTime: String,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
+            Log.e(javaClass.simpleName, "Adding todo item")
             val id = savedStateHandle.get<Todo>("todo")?.id
             if (id != null) {
                 _isAddingTodoItem.postValue(SingleLiveEvent(true))
@@ -241,8 +259,14 @@ class ViewTodoViewModel @ViewModelInject constructor(
                     formatDateForApi("$deadlineDate $deadlineTime")
                 )) {
                     is OperationResult.Success -> {
-                        loadTodoItems()
-                        _onAddTodoItemSuccess.postValue(SingleLiveEvent(true))
+                        Log.e(javaClass.simpleName, "Todo added succesfully")
+                        if (selectedUri != null) {
+                            Log.e(javaClass.simpleName, "Uploading attachment now")
+                            uploadAttachmentForTodo(result.data.itemId)
+                        } else {
+                            loadTodoItems()
+                            _onAddTodoItemSuccess.postValue(SingleLiveEvent(true))
+                        }
                     }
                     is OperationResult.Error -> {
                         _onAddTodoItemErrorMessage.postValue(
@@ -250,15 +274,103 @@ class ViewTodoViewModel @ViewModelInject constructor(
                                 result.message
                             )
                         )
+                        _isAddingTodoItem.postValue(SingleLiveEvent(false))
                     }
                 }
-                _isAddingTodoItem.postValue(SingleLiveEvent(false))
             } else {
                 _onDeleteTodoErrorMessage.postValue(
                     SingleLiveEvent(
                         "Something went wrong. Please try again later"
                     )
                 )
+            }
+        }
+    }
+
+    private val _fileDetails = MutableLiveData<String>()
+    val fileDetails: LiveData<String>
+        get() = _fileDetails
+
+    var selectedUri: Uri? = null
+        set(value) {
+            field = value
+            if (value == null) {
+                _fileDetails.postValue("")
+            } else {
+                var fileText = ""
+                selectedUri?.let { returnUri ->
+                    _application.contentResolver.query(returnUri, null, null, null, null)
+                }?.use { cursor ->
+                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+                    cursor.moveToFirst()
+                    fileText = "${cursor.getString(nameIndex)} (${
+                        Formatter.formatFileSize(
+                            _application,
+                            cursor.getLong(sizeIndex)
+                        )
+                    })"
+                }
+                _fileDetails.postValue(fileText)
+            }
+        }
+
+    private val externalFileDir = application.getExternalFilesDir(null).toString()
+    fun getFile(): MultipartBody.Part {
+        /*
+           The URI scheme we get is a content resolver and it's possible that the document shared is
+           from the cloud. So we create a copy of the file onto our Scooped storage directory using
+           standard Java IO which we have full access to. Then, we create a File object using that
+           directory which can then be used to create the MultipartBody Part.
+           */
+        var fileName = ""
+        selectedUri?.let { returnUri ->
+            _application.contentResolver.query(returnUri, null, null, null, null)
+        }?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            cursor.moveToFirst()
+            fileName = cursor.getString(nameIndex)
+        }
+
+        val mimeType = selectedUri?.let { returnUri ->
+            _application.contentResolver.getType(returnUri)
+        } ?: "application/*"
+
+        val fileLocation =
+            externalFileDir + File.separator.toString() + fileName
+
+        val inputStream = _application.contentResolver.openInputStream(selectedUri!!)!!
+        // selectedUri is checked to not be null before calling this function so it's safe to call !!
+        val outputStream = FileOutputStream(File(fileLocation))
+        val buf = ByteArray(1024)
+        var len: Int
+        while (inputStream.read(buf).also { len = it } > 0) {
+            outputStream.write(buf, 0, len)
+        }
+        outputStream.close()
+        inputStream.close()
+
+        val file = File(fileLocation)
+        val body = RequestBody.create(MediaType.parse(mimeType), file)
+        return MultipartBody.Part.createFormData("upload", file.name, body)
+    }
+
+    private fun uploadAttachmentForTodo(todoId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val result = repository.uploadDocumentForTodo(todoId, getFile())) {
+                is OperationResult.Success -> {
+                    Log.e(javaClass.simpleName, "Attachment upload success")
+                    loadTodoItems()
+                    _onAddTodoItemSuccess.postValue(SingleLiveEvent(true))
+                }
+                is OperationResult.Error -> {
+                    _onAddTodoItemErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                    _isAddingTodoItem.postValue(SingleLiveEvent(false))
+                }
             }
         }
     }

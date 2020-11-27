@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ToDoListFragment : Fragment() {
 
     private lateinit var binding: ToDoListFragmentBinding
-    private val viewModel by activityViewModels<ToDoListViewModel>()
+    private val viewModel by viewModels<ToDoListViewModel>()
 
     private val todoAdapter = TodoAdapter()
 
@@ -51,7 +51,7 @@ class ToDoListFragment : Fragment() {
             adapter = todoAdapter
         }
         binding.addTodoFab.setOnClickListener {
-            AddTodoBottomSheetFragment.newInstance().show(childFragmentManager, "add-todo")
+            AddTodoBottomSheetFragment(viewModel).show(childFragmentManager, "add-todo")
         }
 
         with(viewModel) {

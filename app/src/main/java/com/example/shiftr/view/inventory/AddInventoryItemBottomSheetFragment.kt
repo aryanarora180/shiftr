@@ -1,13 +1,14 @@
 package com.example.shiftr.view.inventory
 
 import android.app.Activity
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
@@ -23,6 +24,16 @@ class AddInventoryItemBottomSheetFragment(private val viewModel: InventoryViewMo
     private lateinit var binding: AddInventoryItemBinding
 
     private val units = listOf("None", "g", "Kg", "mL", "L")
+    private val getImage =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                binding.imagePreview.setImageURI(uri)
+            } else {
+                binding.imagePreview.setImageResource(R.drawable.outline_account_circle_24)
+            }
+            viewModel.selectedUri = uri
+            viewModel.getFile()
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +48,10 @@ class AddInventoryItemBottomSheetFragment(private val viewModel: InventoryViewMo
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            uploadImageButton.setOnClickListener {
+                getImage.launch("image/*")
+            }
+
             val unitDropdownAdapter = ArrayAdapter(requireContext(), R.layout.text_menu_item, units)
             unitDropdown.setAdapter(unitDropdownAdapter)
             unitDropdown.setOnClickListener {
@@ -97,7 +112,8 @@ class AddInventoryItemBottomSheetFragment(private val viewModel: InventoryViewMo
     }
 
     private fun hideKeyboard() {
-        val imm = requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 }

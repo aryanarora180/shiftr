@@ -13,10 +13,9 @@ import com.example.shiftr.view.showSnackbar
 import com.example.shiftr.viewmodel.ToDoListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class AddTodoBottomSheetFragment : BottomSheetDialogFragment() {
+class AddTodoBottomSheetFragment(private val viewModel: ToDoListViewModel) : BottomSheetDialogFragment() {
 
     private lateinit var binding: AddTodoFragmentBinding
-    private val viewModel by activityViewModels<ToDoListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,9 +96,5 @@ class AddTodoBottomSheetFragment : BottomSheetDialogFragment() {
             R.id.chip_gray -> "#455A64"
             else -> "#D32F2F"
         }
-    }
-
-    companion object {
-        fun newInstance() = AddTodoBottomSheetFragment()
     }
 }

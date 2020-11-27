@@ -3,6 +3,9 @@ package com.example.shiftr.model
 import android.content.Context
 import android.util.Log
 import com.example.shiftr.data.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.HttpException
 
@@ -211,6 +214,20 @@ class AppRepository(context: Context) : AppDataSource {
         e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
+
+    override suspend fun uploadDocumentForTodo(todoId: Int, file: MultipartBody.Part) = try {
+        apiClient.uploadDocumentForTodo(RequestBody.create(MediaType.parse("text/plain"), todoId.toString()), file)
+        OperationResult.Success(Unit)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: KotlinNullPointerException) {
+        OperationResult.Success(Unit)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
     private fun getParsedErrorBody(status: Int, errorBody: String?): OperationResult.Error {
         return if (errorBody != null) {
             try {

@@ -1,7 +1,9 @@
 package com.example.shiftr.data
 
 import android.content.Context
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -88,9 +90,10 @@ object ApiClient {
         @GET("inventory/")
         suspend fun getInventory(): GetResponse<List<InventoryItem>>
 
+        @Multipart
         @POST("inventory/")
         suspend fun addInventoryItem(
-            @Body body: InventoryItemBody
+            @Body body: InventoryItemBody,
         )
 
         @PATCH("inventory/{id}")
@@ -106,5 +109,12 @@ object ApiClient {
 
         @GET("auth/dashboard/")
         suspend fun getDashboard(): GetResponse<DashboardResponse>
+
+        @Multipart
+        @POST("documents/")
+        suspend fun uploadDocumentForTodo(
+            @Part("id") todoId: RequestBody,
+            @Part file: MultipartBody.Part,
+        )
     }
 }

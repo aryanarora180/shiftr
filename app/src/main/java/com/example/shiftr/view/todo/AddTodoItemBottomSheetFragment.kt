@@ -1,10 +1,11 @@
 package com.example.shiftr.view.todo
 
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import com.example.shiftr.R
 import com.example.shiftr.data.SingleLiveEvent
@@ -16,7 +17,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 
-class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) : BottomSheetDialogFragment() {
+class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
+    BottomSheetDialogFragment() {
 
     private lateinit var binding: AddTodoItemFragmentBinding
 
@@ -40,6 +42,10 @@ class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
                 showTimePicker()
             }
 
+            attachFileButton.setOnClickListener {
+                getFile.launch("application/*")
+            }
+
             applyButton.setOnClickListener {
                 viewModel.addTodoItem(
                     todoEdit.text.toString(),
@@ -54,8 +60,14 @@ class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
             isAddingTodoItem.observe(viewLifecycleOwner, isAddingTodoObserver)
             onAddTodoItemErrorMessage.observe(viewLifecycleOwner, onAddTodoErrorMessageObserver)
             onAddTodoItemSuccess.observe(viewLifecycleOwner, onAddTodoSuccessObserver)
+            fileDetails.observe(viewLifecycleOwner, fileDetailsObserver)
         }
     }
+
+    private val getFile =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            viewModel.selectedUri = uri
+        }
 
     private val isAddingTodoObserver = Observer<SingleLiveEvent<Boolean>> {
         it.getContentIfNotHandled()?.let { isAdding ->
@@ -91,6 +103,10 @@ class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
         }
     }
 
+    private val fileDetailsObserver = Observer<String> {
+        binding.fileDetailsText.text = it
+    }
+
     private fun showDatePicker() {
         val datePicker =
             MaterialDatePicker.Builder.datePicker().build()
@@ -108,7 +124,7 @@ class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
         timePicker.show(parentFragmentManager, timePicker.toString())
     }
 
-    private fun getSelectedPriority() = when(binding.priorityChipGroup.checkedChipId) {
+    private fun getSelectedPriority() = when (binding.priorityChipGroup.checkedChipId) {
         R.id.chip_low -> TodoItem.PRIORITY_LOW
         R.id.chip_imp -> TodoItem.PRIORITY_IMPORTANT
         R.id.chip_urg -> TodoItem.PRIORITY_URGENT

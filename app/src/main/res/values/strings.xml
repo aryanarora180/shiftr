@@ -45,4 +45,6 @@
     <string name="profile">Profile</string>
     <string name="sign_in">Sign in</string>
     <string name="_6_digit_otp">6 digit OTP</string>
+    <string name="add_image">Add image</string>
+    <string name="attach_file">Attach file</string>
 </resources>
