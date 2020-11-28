@@ -8,15 +8,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.shiftr.LoginActivity
 import com.example.shiftr.R
 import com.example.shiftr.data.DashboardResponse
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.databinding.DashboardFragmentBinding
 import com.example.shiftr.viewmodel.DashboardViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -36,8 +39,11 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.black)
 
         with(binding) {
+            signOutImage.setOnClickListener { showSignOutConfirmationDialog() }
+
             completedTodosCard.setOnClickListener { findNavController().navigate(R.id.toDoListFragment) }
             pendingTodosCard.setOnClickListener { findNavController().navigate(R.id.toDoListFragment) }
             inventoryItemsCard.setOnClickListener { findNavController().navigate(R.id.inventoryFragment) }
@@ -101,6 +107,20 @@ class DashboardFragment : Fragment() {
             completedTodosText.text = it.completedTdo.toString()
             inventoryItemsText.text = it.inventory.toString()
             pendingTodosText.text = it.pendingTodo.toString()
+        }
+    }
+
+    private fun showSignOutConfirmationDialog() {
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle("Sign out")
+            setMessage("Are you sure you want to sign out?")
+            setPositiveButton("Yes") { _, _ ->
+                viewModel.signOut()
+                startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                requireActivity().finish()
+            }
+            setNeutralButton("Cancel") { _, _ -> /* Do nothing */ }
+            show()
         }
     }
 }

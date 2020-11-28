@@ -58,7 +58,7 @@
             android:id="@+id/no_inventory_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/you_have_no_items_in_your_inventory"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/no_inventory_image"
@@ -66,13 +66,12 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <ImageView
             android:id="@+id/no_inventory_image"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:adjustViewBounds="true"
             android:src="@drawable/outline_view_list_24"
             android:visibility="gone"

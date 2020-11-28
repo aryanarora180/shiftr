@@ -16,7 +16,8 @@
         tools:layout="@layout/to_do_list_fragment" >
         <action
             android:id="@+id/action_toDoListFragment_to_viewTodoFragment"
-            app:destination="@id/viewTodoFragment" />
+            app:destination="@id/viewTodoFragment"
+            app:enterAnim="@android:anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/viewTodoFragment"

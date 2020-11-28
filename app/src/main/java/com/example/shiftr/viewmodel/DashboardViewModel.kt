@@ -15,6 +15,7 @@ import com.example.shiftr.data.DashboardResponse
 import com.example.shiftr.data.OperationResult
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.model.AppDataSource
+import com.example.shiftr.model.DataStoreUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -24,6 +25,7 @@ import java.io.IOException
 @SuppressLint("NullSafeMutableLiveData")
 class DashboardViewModel @ViewModelInject constructor(
     private val repository: AppDataSource,
+    private val dataStoreUtils: DataStoreUtils,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -83,6 +85,8 @@ class DashboardViewModel @ViewModelInject constructor(
             e.printStackTrace()
         }
     }
+
+    fun signOut() = dataStoreUtils.signOut()
 
     init {
         loadDashboard()
