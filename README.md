@@ -16,6 +16,7 @@ The inability of efficiently managing the home inventories will not only impact 
 - ConstraintLayout and Material Components for the UI
 - Kotlin extension functions
 - Scooped storage
+- [Django backend](https://github.com/adichopra11/shiftr_api)
 
 ## Features
 ### Registration and sign in
@@ -43,3 +44,6 @@ The inability of efficiently managing the home inventories will not only impact 
 - Android development moves at a quick pace: using up-to date methods requires a lot of research. 
 - Android storage permissions have become restricted on Android 10+ which made it difficult to upload and share files.
 - Figuring out how to upload files using multipart form-data was difficult.
+
+## Download
+[APK](https://drive.google.com/file/d/1-d8JX7wRPKV-hm6W1FOcGnGeJdq0TxtH/view?usp=sharing)
