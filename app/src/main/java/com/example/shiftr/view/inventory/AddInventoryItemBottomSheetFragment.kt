@@ -24,16 +24,6 @@ class AddInventoryItemBottomSheetFragment(private val viewModel: InventoryViewMo
     private lateinit var binding: AddInventoryItemBinding
 
     private val units = listOf("None", "g", "Kg", "mL", "L")
-    private val getImage =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if (uri != null) {
-                binding.imagePreview.setImageURI(uri)
-            } else {
-                binding.imagePreview.setImageResource(R.drawable.outline_account_circle_24)
-            }
-            viewModel.selectedUri = uri
-            viewModel.getFile()
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,10 +38,6 @@ class AddInventoryItemBottomSheetFragment(private val viewModel: InventoryViewMo
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            uploadImageButton.setOnClickListener {
-                getImage.launch("image/*")
-            }
-
             val unitDropdownAdapter = ArrayAdapter(requireContext(), R.layout.text_menu_item, units)
             unitDropdown.setAdapter(unitDropdownAdapter)
             unitDropdown.setOnClickListener {

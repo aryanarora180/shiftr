@@ -46,7 +46,7 @@ class InventoryViewModel @ViewModelInject constructor(
     val inventory: LiveData<List<InventoryItem>>
         get() = _inventory
 
-    fun loadInventory() {
+    private fun loadInventory() {
         viewModelScope.launch(Dispatchers.IO) {
             _isDataLoading.postValue(true)
             when (val result = repository.getInventory()) {
@@ -146,52 +146,6 @@ class InventoryViewModel @ViewModelInject constructor(
                     _isDataLoading.postValue(false)
                 }
             }
-        }
-    }
-
-    var selectedUri: Uri? = null
-
-    private val externalFileDir = application.getExternalFilesDir(null).toString()
-    fun getFile(): MultipartBody.Part? {
-        if (selectedUri == null) {
-            return null
-        } else {
-            //Using standard Android functions to get the file name from the URI and the mime type.
-            var fileName = ""
-            selectedUri?.let { returnUri ->
-                _application.contentResolver.query(returnUri, null, null, null, null)
-            }?.use { cursor ->
-                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                cursor.moveToFirst()
-                fileName = cursor.getString(nameIndex)
-            }
-
-            val mimeType = selectedUri?.let { returnUri ->
-                _application.contentResolver.getType(returnUri)
-            } ?: "image/*"
-
-            val fileLocation =
-                externalFileDir + File.separator.toString() + fileName
-
-            /*
-           The URI scheme we get is a content resolver and it's possible that the document shared is
-           from the cloud. So we create a copy of the file onto our Scooped storage directory using
-           standard Java IO which we have full access to. Then, we create a File object using that
-           directory which can then be used to create the MultipartBody Part.
-           */
-            val inputStream = _application.contentResolver.openInputStream(selectedUri!!)!!
-            val outputStream = FileOutputStream(File(fileLocation))
-            val buf = ByteArray(1024)
-            var len: Int
-            while (inputStream.read(buf).also { len = it } > 0) {
-                outputStream.write(buf, 0, len)
-            }
-            outputStream.close()
-            inputStream.close()
-
-            val file = File(fileLocation)
-            val body = RequestBody.create(MediaType.parse(mimeType), file)
-            return MultipartBody.Part.createFormData("upload", file.name, body)
         }
     }
 

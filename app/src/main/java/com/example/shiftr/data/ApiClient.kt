@@ -90,7 +90,6 @@ object ApiClient {
         @GET("inventory/")
         suspend fun getInventory(): GetResponse<List<InventoryItem>>
 
-        @Multipart
         @POST("inventory/")
         suspend fun addInventoryItem(
             @Body body: InventoryItemBody,

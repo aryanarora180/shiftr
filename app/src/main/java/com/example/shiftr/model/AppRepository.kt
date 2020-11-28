@@ -249,7 +249,7 @@ class AppRepository(context: Context) : AppDataSource {
             try {
                 val jsonObject = JSONObject(errorBody)
                 OperationResult.Error(
-                    jsonObject.getString("error")
+                    jsonObject.getString("errors")
                 )
             } catch (e: Exception) {
                 OperationResult.Error(OperationResult.getErrorMessage(status))
