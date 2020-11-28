@@ -1,5 +1,9 @@
 package com.example.shiftr.view
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +18,7 @@ import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.databinding.DashboardFragmentBinding
 import com.example.shiftr.viewmodel.DashboardViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class DashboardFragment : Fragment() {
@@ -36,12 +41,39 @@ class DashboardFragment : Fragment() {
             completedTodosCard.setOnClickListener { findNavController().navigate(R.id.toDoListFragment) }
             pendingTodosCard.setOnClickListener { findNavController().navigate(R.id.toDoListFragment) }
             inventoryItemsCard.setOnClickListener { findNavController().navigate(R.id.inventoryFragment) }
+
+            shareImage.setOnClickListener { takeScreeShot() }
         }
 
         with(viewModel) {
             isDataLoading.observe(viewLifecycleOwner, isDataLoadingObserver)
             onMessageError.observe(viewLifecycleOwner, onErrorObserver)
             dashboard.observe(viewLifecycleOwner, dashboardObserver)
+            onDashboardSave.observe(viewLifecycleOwner, openImageObserver)
+        }
+    }
+
+    private fun takeScreeShot() {
+        val bitmap = Bitmap.createBitmap(
+            requireView().width,
+            requireView().height, Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        requireView().draw(canvas)
+
+        viewModel.saveDashboardScreenshot(bitmap)
+    }
+
+    private val openImageObserver = Observer<SingleLiveEvent<Uri>> { event ->
+        event.getContentIfNotHandled()?.let {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.apply {
+                putExtra(Intent.EXTRA_STREAM, it)
+                putExtra(Intent.EXTRA_TEXT, "This is my dashboard on the shiftr app!")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                type = "image/png"
+            }
+            startActivity(intent)
         }
     }
 

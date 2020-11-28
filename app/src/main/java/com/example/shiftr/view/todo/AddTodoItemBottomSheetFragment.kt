@@ -31,6 +31,11 @@ class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
         return binding.root
     }
 
+    private val getFile =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            viewModel.selectedUri = uri
+        }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -63,11 +68,6 @@ class AddTodoItemBottomSheetFragment(private val viewModel: ViewTodoViewModel) :
             fileDetails.observe(viewLifecycleOwner, fileDetailsObserver)
         }
     }
-
-    private val getFile =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            viewModel.selectedUri = uri
-        }
 
     private val isAddingTodoObserver = Observer<SingleLiveEvent<Boolean>> {
         it.getContentIfNotHandled()?.let { isAdding ->

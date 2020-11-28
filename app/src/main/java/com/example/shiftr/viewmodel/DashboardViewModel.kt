@@ -1,22 +1,31 @@
 package com.example.shiftr.viewmodel
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.core.content.FileProvider
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shiftr.BuildConfig
 import com.example.shiftr.data.DashboardResponse
 import com.example.shiftr.data.OperationResult
 import com.example.shiftr.data.SingleLiveEvent
 import com.example.shiftr.model.AppDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 @SuppressLint("NullSafeMutableLiveData")
 class DashboardViewModel @ViewModelInject constructor(
-    private val repository: AppDataSource
-) : ViewModel() {
+    private val repository: AppDataSource,
+    application: Application
+) : AndroidViewModel(application) {
 
     private val _isDataLoading = MutableLiveData<Boolean>()
     val isDataLoading: LiveData<Boolean>
@@ -46,6 +55,32 @@ class DashboardViewModel @ViewModelInject constructor(
                 }
             }
             _isDataLoading.postValue(false)
+        }
+    }
+
+    private val _onDashboardSave = MutableLiveData<SingleLiveEvent<Uri>>()
+    val onDashboardSave: LiveData<SingleLiveEvent<Uri>>
+        get() = _onDashboardSave
+
+    private val externalFileDir = application.getExternalFilesDir(null).toString()
+    fun saveDashboardScreenshot(screenshot: Bitmap) {
+        val fileLocation = externalFileDir + File.separator.toString() + "dashboard.png"
+
+        try {
+            FileOutputStream(fileLocation).use { out ->
+                screenshot.compress(Bitmap.CompressFormat.PNG, 100, out)
+            }
+            _onDashboardSave.postValue(
+                SingleLiveEvent(
+                    FileProvider.getUriForFile(
+                        getApplication(),
+                        "${BuildConfig.APPLICATION_ID}.provider",
+                        File(fileLocation)
+                    )
+                )
+            )
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
