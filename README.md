@@ -3,8 +3,8 @@ shiftr for Android, built with Material design and using the best practices in A
 Proudly built entirely with Koltin.
 
 ## Brief Description
-In modern households, due to hectic work schedules, it is quite difficult to remember as well as manage the availability of mandatory commodities in an urban home. Not only working professionals, homemakers, job-seekers, and others fail to keep track of their inventories or scheduled meetings which in turn either delay or terminate their regular duties. Sometimes, most of the people forget that they already have sufficient stock of certain items, and end up re-buying the same stuff again (toothpaste, soap, face wash, etc.) as a result lose money and time.
-The inability of efficiently managing the home inventories will not only impact work schedules, but also cause stress, anger, and impatience.  This automated application is developed in order to keep track of the regular activities and aid people in managing the daily home inventories.
+In modern households, due to hectic work schedules, it's quite difficult to remember, as well as manage, the availability of mandatory commodities in an urban home. Working professionals, homemakers, job-seekers, and others fail to keep track of their inventories and scheduled meetings which, in turn, either delay or terminate their regular duties. Sometimes, most people forget that they already have sufficient stock of certain items, and end up re-buying the same stuff again (toothpaste, soap, face wash, etc.) and, as a result, lose money and time.
+The inability of efficiently managing the home inventories will not only impact work schedules, but also cause stress, anger, and impatience.  This automated app has been developed to keep track of these regular activities and aid people in managing the daily home inventories.
 
 ## Tech stack & Open-source libraries
 - Minimum SDK level 23
