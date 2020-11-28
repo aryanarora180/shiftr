@@ -169,3 +169,7 @@ data class DashboardResponse(
     @field:Json(name = "pending_todo") val pendingTodo: Int = 0,
     @field:Json(name = "inventory") val inventory: Int = 0,
 )
+
+data class ScheduleEmailTodoItemBody(
+    @field:Json(name = "todo_item_id") val todoId: Int,
+)

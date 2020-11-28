@@ -115,5 +115,10 @@ object ApiClient {
             @Part file: MultipartBody.Part,
             @Part("todo_item") todoId: RequestBody,
         )
+
+        @POST("todo/schedule-email/")
+        suspend fun scheduleEmail(
+            @Body body: ScheduleEmailTodoItemBody,
+        )
     }
 }

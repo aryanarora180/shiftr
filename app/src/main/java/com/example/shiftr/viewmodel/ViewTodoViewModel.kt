@@ -247,7 +247,6 @@ class ViewTodoViewModel @ViewModelInject constructor(
         deadlineTime: String,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.e(javaClass.simpleName, "Adding todo item")
             val id = savedStateHandle.get<Todo>("todo")?.id
             if (id != null) {
                 _isAddingTodoItem.postValue(SingleLiveEvent(true))
@@ -259,13 +258,10 @@ class ViewTodoViewModel @ViewModelInject constructor(
                     formatDateForApi("$deadlineDate $deadlineTime")
                 )) {
                     is OperationResult.Success -> {
-                        Log.e(javaClass.simpleName, "Todo added succesfully. Result is ${result.data}")
                         if (selectedUri != null) {
-                            Log.e(javaClass.simpleName, "Uploading attachment now")
                             uploadAttachmentForTodo(result.data.itemId)
                         } else {
-                            loadTodoItems()
-                            _onAddTodoItemSuccess.postValue(SingleLiveEvent(true))
+                            scheduleEmailForTodoItem(result.data.itemId)
                         }
                     }
                     is OperationResult.Error -> {
@@ -283,6 +279,25 @@ class ViewTodoViewModel @ViewModelInject constructor(
                         "Something went wrong. Please try again later"
                     )
                 )
+            }
+        }
+    }
+
+    private fun scheduleEmailForTodoItem(todoId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val result = repository.scheduleEmailForTodoItem(todoId)) {
+                is OperationResult.Success -> {
+                    loadTodoItems()
+                    _onAddTodoItemSuccess.postValue(SingleLiveEvent(true))
+                }
+                is OperationResult.Error -> {
+                    _onAddTodoItemErrorMessage.postValue(
+                        SingleLiveEvent(
+                            result.message
+                        )
+                    )
+                    _isAddingTodoItem.postValue(SingleLiveEvent(false))
+                }
             }
         }
     }
@@ -359,9 +374,7 @@ class ViewTodoViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = repository.uploadDocumentForTodo(todoId, getFile())) {
                 is OperationResult.Success -> {
-                    Log.e(javaClass.simpleName, "Attachment upload success")
-                    loadTodoItems()
-                    _onAddTodoItemSuccess.postValue(SingleLiveEvent(true))
+                    scheduleEmailForTodoItem(todoId)
                 }
                 is OperationResult.Error -> {
                     _onAddTodoItemErrorMessage.postValue(

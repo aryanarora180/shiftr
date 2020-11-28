@@ -76,4 +76,8 @@ interface AppDataSource {
         todoId: Int,
         file: MultipartBody.Part,
     ): OperationResult<Unit>
+
+    suspend fun scheduleEmailForTodoItem(
+        todoItemId: Int,
+    ): OperationResult<Unit>
 }

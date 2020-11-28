@@ -229,7 +229,6 @@ class AppRepository(context: Context) : AppDataSource {
     }
 
     override suspend fun uploadDocumentForTodo(todoId: Int, file: MultipartBody.Part) = try {
-        Log.e(javaClass.simpleName, "Todo ID: $todoId")
         apiClient.uploadDocumentForTodo(
             file,
             RequestBody.create(MediaType.parse("text/plain"), todoId.toString())
@@ -241,6 +240,19 @@ class AppRepository(context: Context) : AppDataSource {
     } catch (e: KotlinNullPointerException) {
         OperationResult.Success(Unit)
     } catch (e: Exception) {
+        OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
+    }
+
+    override suspend fun scheduleEmailForTodoItem(todoItemId: Int): OperationResult<Unit> = try {
+        val result = apiClient.scheduleEmail(ScheduleEmailTodoItemBody(todoItemId))
+        OperationResult.Success(result)
+    } catch (e: HttpException) {
+        e.printStackTrace()
+        getParsedErrorBody(e.code(), e.response()?.errorBody()?.string())
+    } catch (e: KotlinNullPointerException) {
+        OperationResult.Success(Unit)
+    } catch (e: Exception) {
+        e.printStackTrace()
         OperationResult.Error(OperationResult.getErrorMessage(OperationResult.ERROR_CODE_UNDETERMINED))
     }
 
